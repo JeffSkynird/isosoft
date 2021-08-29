@@ -1,0 +1,15 @@
+*{
+    font-family: 'Gotham SSm A', 'Gotham SSm B', Helvetica, sans-serif !IMPORTANT;
+}
+::placeholder {
+    color: #959595;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #959595;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+   color: #959595;
+  }

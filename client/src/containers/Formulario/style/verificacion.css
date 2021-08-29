@@ -1,0 +1,33 @@
+ #dialog {
+    margin: 0px auto;
+      padding: 15px 30px 30px 30px;
+        display: inline-block;
+              overflow: hidden;
+                position: relative;
+                  max-width: 450px;
+          }
+
+ #dialog #form input {
+    margin: 0 5px;
+      text-align: center;
+        line-height: 80px;
+          font-size: 25px;
+            border: solid 1px #ccc;
+              box-shadow: 0 0 5px #ccc inset;
+                outline: none;
+                width: 70px;
+                height: 70px;
+                    -webkit-transition: all 0.2s ease-in-out;
+                      transition: all 0.2s ease-in-out;
+                        border-radius: 3px;
+                }
+               #dialog #form input:focus {
+                          border-color: #213f87;
+                            box-shadow: 0 0 5px #213f87 inset;
+                    }
+                   #dialog #form input::-moz-selection {
+                              background: transparent;
+                      }
+                    #dialog #form input::selection {
+                                background: transparent;
+                        }
