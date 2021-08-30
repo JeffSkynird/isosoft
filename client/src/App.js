@@ -20,7 +20,7 @@ import Initializer from './store/Initializer'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Login from './containers/login/Login'
+import Login from './containers/main/Login'
 import { useHistory } from "react-router-dom";
 import Drawer2 from './components/Drawer2'
 import Bienvenida from './containers/main/Bienvenida'

@@ -10,19 +10,19 @@ export default function Propager(props) {
         if(usuario==null){      
        
             let auth = localStorage.getItem("auth");
-          /*   if(auth!=null){
+            if(auth!=null){
                 cargarUsuario(auth)
 
                 if(history.location.pathname=="/login"){
                     history.push("evaluaciones")
                 }
             }else{
-                if(history.location.pathname!="/formulario"){
+                if(history.location.pathname!="/login"){
                     history.push("/bienvenida")
                 }
               
                
-            } */
+            }
          
         }
     },[])

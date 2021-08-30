@@ -4,7 +4,41 @@ import {ENTRYPOINT} from '../../config/API'
 import {play} from '../../utils/sound'
 
 const axios = require('axios');
+export const registrar = (data, setTab,store) => {
+  const { cargarUsuario ,playSound,mostrarNotificacion,mostrarLoader} = store
+  
+  let url = ENTRYPOINT+"users"
+  let setting = {
+    method: "POST",
+    url: url,
+    data: data,
+    body:data,
+    headers: { 'Accept': 'application/json' }
 
+  };
+  mostrarLoader(true)
+
+  axios(setting)
+    .then((res) => {
+      let response = res.data
+     if(response.type!="error"){
+      mostrarLoader(false)
+      mostrarNotificacion({type:"success",message:response.message})
+      setTab(0)
+     }else{
+      mostrarNotificacion({type:"error",message:response.message})
+      mostrarLoader(false)
+   
+     }
+    })
+    .catch((error) => {
+      mostrarLoader(false)
+
+      
+
+
+    });
+}
 export const iniciarSesion = (email, password, store,history) => {
   const { cargarUsuario ,playSound,mostrarNotificacion,mostrarLoader} = store
   var raw = {
@@ -36,15 +70,13 @@ export const iniciarSesion = (email, password, store,history) => {
       guardarSession(encrypt);
       mostrarLoader(false)
       mostrarNotificacion({type:"success",message:response.message})
-      play(playSound,'intro')
-     
     
       /* if(response.user.type_user=="client"){
         history.push('dashboard');
       }else{
         history.push('dashboard_asesor');
       } */
-      history.push('dashboard');
+      window.location.href='/evaluaciones';
 
      }else{
       mostrarNotificacion({type:"error",message:response.message})
@@ -64,7 +96,7 @@ export const iniciarSesion = (email, password, store,history) => {
 export const cerrarSesion = (store) => {
   const { usuario,logout,mostrarNotificacion ,playSound,mostrarLoader} = store
 
-  let url = ENTRYPOINT+"logout"
+  let url = ENTRYPOINT+"auth/logout"
   let setting = {
     method: "POST",
     url: url,
@@ -84,7 +116,7 @@ export const cerrarSesion = (store) => {
      
       mostrarNotificacion({type:"success",message:res.data.message})
       mostrarLoader(false)
-      play(playSound,'intro2')
+      window.location.href="/bienvenida"
 
     })
     .catch((error) => {

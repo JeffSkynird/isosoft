@@ -12,8 +12,8 @@ export default function Bienvenida(props) {
                 <img src={logo} style={{ marginBottom: 15, height: 30, width: 124 }} alt="" srcset="" />
 
                 <div>
-                    <Button style={{marginRight:10}}  onClick={() => window.location.href="/evaluaciones"}>Registrarse</Button>
-                    <Button variant="contained" color="primary" onClick={() => window.location.href="/evaluaciones"}>
+                    <Button style={{marginRight:10}}  onClick={() => window.location.href="/login"}>Registrarse</Button>
+                    <Button variant="contained" color="primary" onClick={() => window.location.href="/login"}>
                         Iniciar Sesión
                     </Button>
                 </div>
@@ -23,10 +23,10 @@ export default function Bienvenida(props) {
                 <Typography variant="h3" >
             Califica con check lists de <span style={{color:'#186FFD'}}>cumplimiento</span>  
                 </Typography>     
-                <Typography variant="h5" style={{marginTop:10,color:'#929396',marginBottom:15}} >
+                <Typography variant="h5" style={{fontWeight:100,marginTop:10,color:'#929396',marginBottom:15}} >
                 Gestiona preguntas basadas en ISO 25010 para obtener el porcentaje de cumplimiento
                 </Typography>
-                <Button variant="outlined" color="primary" size="large" onClick={() => window.location.href="/evaluaciones"}>
+                <Button variant="outlined" color="primary" size="large" onClick={() => window.location.href="/login"}>
                         Empezar
                     </Button>
                 </div>

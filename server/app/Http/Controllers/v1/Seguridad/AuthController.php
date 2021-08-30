@@ -35,6 +35,12 @@ class AuthController extends Controller
                     'token' => $token,
                     'user' => $user
                 ]);
+            }else{
+                return response([
+                    "status" => "500",
+                    'message' => 'Credenciales incorrectas',
+                    'type'=>'error'
+                ]);
             }
         } catch (\Exception $e) {
             return response()->json([

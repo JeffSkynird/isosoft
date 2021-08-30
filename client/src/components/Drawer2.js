@@ -26,6 +26,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Initializer from '../store/Initializer'
 import { desencriptarJson } from '../utils/security'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
+import { cerrarSesion } from '../utils/API/auth';
+
 import logo from '../assets/logoPeque.png'
 const drawerWidth = 240;
 
@@ -74,7 +76,9 @@ function ResponsiveDrawer(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
+const cerrar=()=>{
+    cerrarSesion(initializer)
+}
     const drawer = (
         <div >
             <div style={{ marginBottom: 15, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -88,7 +92,7 @@ function ResponsiveDrawer(props) {
                 <div style={{
                     width: '150px',
                     whiteSpace: 'nowrap',
-                    overflow: 'hidden',
+                    overflow: 'hidden',textAlign: 'center',
                     textOverflow: 'ellipsis'
                 }}>
                     <Typography variant="subtitle1" style={{ fontSize: 15, color: '#929396' }}>
@@ -124,7 +128,7 @@ function ResponsiveDrawer(props) {
                         <ListItemIcon><SettingsIcon /> </ListItemIcon>
                         <ListItemText primary={'Configuración'} />
                     </ListItem>
-                    <ListItem button >
+                    <ListItem button onClick={cerrar}>
                         <ListItemIcon><ExitToAppIcon /> </ListItemIcon>
                         <ListItemText primary={'Salir'} />
                     </ListItem>
@@ -145,7 +149,7 @@ console.log(history)
 
 {
 // initializer.usuario != null ?
-history.location.pathname!="/bienvenida"?
+history.location.pathname!="/bienvenida"&&history.location.pathname!="/login"?
  <nav className={classes.drawer} aria-label="mailbox folders">
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Hidden smUp implementation="css">
