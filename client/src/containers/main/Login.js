@@ -86,7 +86,7 @@ export default function SignIn() {
                         </div>
                     
 
-                        <img src={splashL} style={{ width: 350, height: 260 }} alt="" srcset="" />
+                        <img src={tab==0?splashL:splashR} style={{ width: 350, height: 260 }} alt="" srcset="" />
                     </Grid>
 
                 </CardContent>

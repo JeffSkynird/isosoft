@@ -13,9 +13,9 @@ export default function Propager(props) {
             if(auth!=null){
                 cargarUsuario(auth)
 
-                if(history.location.pathname=="/login"){
+           
                     history.push("evaluaciones")
-                }
+               
             }else{
                 if(history.location.pathname!="/login"){
                     history.push("/bienvenida")

@@ -11,8 +11,8 @@ class SystemController extends Controller
 {
 
     public function index(){
-        $idUser=1;
-        $data = System::where('id_user', $idUser)->orderBy('created_at')->get();
+        $user = Auth::user();
+        $data = System::where('id_user', $user->id)->orderBy('created_at')->get();
         return response()->json([
             "status" => "200",
             "data"=>$data,
@@ -25,7 +25,7 @@ class SystemController extends Controller
         $name = $request->input('name');
         $url = $request->input('url');
         $description = $request->input('description');
-        //$user = Auth::user();
+       $user = Auth::user();
         $vacios = Validator::make($request->all(), [
             'name' => 'required',
             'url' => 'required'
@@ -41,8 +41,8 @@ class SystemController extends Controller
                 'name' => $name,
                 'url' => $url,
                 'description' => $description,
-                //'id_user'=>$user->id
-                'id_user'=>1
+                'id_user'=>$user->id
+              
             ]);
             return response()->json([
                 "status" => "200",

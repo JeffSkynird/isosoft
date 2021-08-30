@@ -153,7 +153,7 @@ export default function App(props) {
         <Grid container style={{ flexGrow: 1 }}>
           <Grid item xs={12}>
 
-            <Drawer2  >
+            <Drawer2  history={history}>
               <Box component="main"  >
 
                 <Switch>

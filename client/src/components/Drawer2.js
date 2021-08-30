@@ -27,7 +27,7 @@ import Initializer from '../store/Initializer'
 import { desencriptarJson } from '../utils/security'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import { cerrarSesion } from '../utils/API/auth';
-
+import { useLocation, Switch } from 'react-router-dom'; 
 import logo from '../assets/logoPeque.png'
 const drawerWidth = 240;
 
@@ -67,10 +67,11 @@ const useStyles = makeStyles((theme) => ({
 function ResponsiveDrawer(props) {
     const { window } = props;
     let history = useHistory();
-
+    const location = useLocation();
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [cambio,setCambio]=React.useState(null)
     const initializer = useContext(Initializer);
 
     const handleDrawerToggle = () => {
@@ -78,6 +79,16 @@ function ResponsiveDrawer(props) {
     };
 const cerrar=()=>{
     cerrarSesion(initializer)
+}
+const comprobador=(val)=>{
+
+        if(location.pathname==val){
+            return {backgroundColor:'#1070CA',borderRadius:7,color:'white',marginRight:5,marginLeft:5}
+        }else{
+            return {borderRadius:7,marginRight:5,marginLeft:5}
+        }
+
+  
 }
     const drawer = (
         <div >
@@ -106,18 +117,18 @@ const cerrar=()=>{
 
             <Divider />
             <div style={{justifyContent:'space-between',flexDirection:'column',display:'flex',height:'100%'}}>
-                <List>
+                <List style={{padding:10}} >
 
-                    <ListItem button >
+                    <ListItem button style={comprobador('/dashboard')}>
                         <ListItemIcon><DashboardIcon /> </ListItemIcon>
                         <ListItemText primary={'Tablero principal'} />
                     </ListItem>
-                    <ListItem button >
-                        <ListItemIcon><ListIcon /> </ListItemIcon>
+                    <ListItem button onClick={()=>props.history.push('evaluaciones')} style={comprobador('/evaluaciones')}>
+                        <ListItemIcon style={{color:'inherit'}}><ListIcon style={{color:'inherit'}} /> </ListItemIcon>
                         <ListItemText primary={'Evaluaciones'} />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemIcon><InboxIcon /> </ListItemIcon>
+                        </ListItem>
+                        <ListItem button onClick={()=>props.history.push('sistemas')} style={comprobador('/sistemas')}>
+                        <ListItemIcon style={{color:'inherit'}}><DesktopWindowsIcon style={{color:'inherit'}}/> </ListItemIcon>
                         <ListItemText primary={'Sistemas'} />
                     </ListItem>
                 </List>
