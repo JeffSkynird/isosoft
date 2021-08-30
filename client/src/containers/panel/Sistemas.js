@@ -13,7 +13,7 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import Avatar from '@material-ui/core/Avatar';
 import Initializer from '../../store/Initializer'
 
-import { LocalizationTable,TableIcons,removeAccent} from '../../utils/table.js'
+import { LocalizationTable, TableIcons, removeAccent } from '../../utils/table.js'
 import MaterialTable from "material-table";
 import { Grid } from '@material-ui/core';
 import { obtenerTodos } from '../../utils/API/sistemas.js';
@@ -23,31 +23,33 @@ import Eliminar from './components/Eliminar'
 export default function Sistemas(props) {
     const initializer = React.useContext(Initializer);
 
-    const [data,setData] = React.useState([])
-    const [open,setOpen] = React.useState(false)
-    const [open2,setOpen2] = React.useState(false)
-    const [selected,setSelected] = React.useState(null)
+    const [data, setData] = React.useState([])
+    const [open, setOpen] = React.useState(false)
+    const [open2, setOpen2] = React.useState(false)
+    const [selected, setSelected] = React.useState(null)
 
-    React.useEffect(()=>{
-        if(initializer.usuario!=null){
-        obtenerTodos(setData,initializer)
+    React.useEffect(() => {
+        if (initializer.usuario != null) {
+            obtenerTodos(setData, initializer)
         }
-    },[initializer.usuario])
-    const carga=()=>{
-        obtenerTodos(setData,initializer)
+    }, [initializer.usuario])
+    const carga = () => {
+        obtenerTodos(setData, initializer)
         setSelected(null)
     }
     return (
         <Grid container spacing={2}>
-            <Crear sistema={selected} setOpen={setOpen} open={open} carga={carga}/>
-            <Eliminar sistema={selected} setOpen={setOpen2} open={open2} carga={carga}/>
+            <Crear sistema={selected} setOpen={setOpen} open={open} carga={carga} />
+            <Eliminar sistema={selected} setOpen={setOpen2} open={open2} carga={carga} />
+            <Grid item xs={12} md={12}>
+                <Typography variant="h5" >
+                    Sistemas
+                </Typography>
+            </Grid>
 
-            <Typography variant="h5" >
-                Sistemas
-            </Typography>
-            <Grid item xs={12} style={{ display: 'flex', marginTop: 10 }}>
+            <Grid item xs={12} md={12} style={{ display: 'flex', marginTop: 10 }}>
 
-                <Card style={{ width: 300, height: 120, marginRight: 20 }}>
+                <Card style={{ width: 300, height: 120, marginRight: 20, marginBottom: 5 }}>
                     <CardContent>
                         <Typography variant="subtitle1" gutterBottom>
                             Totales
@@ -79,7 +81,7 @@ export default function Sistemas(props) {
                 </Card>
 
             </Grid>
-            <Grid item xs={12} >
+            <Grid item xs={12} md={12} >
                 <div style={{ display: 'flex' }}>
                     <Button disableTouchRipple variant="contained" size="small" style={{ marginRight: 20, backgroundColor: 'white' }}>Filtro</Button>
 
@@ -90,7 +92,7 @@ export default function Sistemas(props) {
                         style={{ width: '100%', marginRight: 20 }}
                         variant="outlined"
                     />
-                    <Button onClick={()=>setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
+                    <Button onClick={() => setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
                         Nuevo
                     </Button>
                 </div>
@@ -105,7 +107,7 @@ export default function Sistemas(props) {
                         { title: "Url", field: "url" },
                         { title: "Descripción", field: "description" },
                         { title: "Evaluaciones", field: "evaluations" },
-                        { title: "Fecha", field: "created_at" ,type:"datetime"},
+                        { title: "Fecha", field: "created_at", type: "datetime" },
 
 
 
@@ -116,32 +118,32 @@ export default function Sistemas(props) {
                     }
 
                     localization={LocalizationTable}
-             
+
                     actions={[
                         {
                             icon: TableIcons.Edit,
                             tooltip: 'Editar',
 
                             onClick: (event, rowData) => {
-                                setSelected( rowData)
+                                setSelected(rowData)
                                 setOpen(true)
-                        }
+                            }
                         },
 
                         {
                             icon: TableIcons.Delete,
                             tooltip: "Borrar",
 
-                            onClick: (event, rowData) =>{
-                                setSelected( rowData)
+                            onClick: (event, rowData) => {
+                                setSelected(rowData)
                                 setOpen2(true)
-                            }  
+                            }
                         },
 
                     ]}
 
                     options={{
-                        showTitle:false,
+                        showTitle: false,
                         actionsColumnIndex: -1,
                         search: false,
                         maxBodyHeight: 350,

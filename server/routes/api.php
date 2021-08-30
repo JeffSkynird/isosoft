@@ -36,11 +36,15 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('polls/{id}', 'App\Http\Controllers\v1\Evaluation\PollController@show');
     Route::delete('polls/{id}', 'App\Http\Controllers\v1\Evaluation\PollController@delete');
     Route::put('polls/{id}', 'App\Http\Controllers\v1\Evaluation\PollController@update');
-    Route::get('polls', 'App\Http\Controllers\v1\Evaluation\PollController@index');
+    Route::get('metrics', 'App\Http\Controllers\v1\Evaluation\MetricController@index');
+    Route::get('questions', 'App\Http\Controllers\v1\Evaluation\QuestionController@index');
+    Route::get('options', 'App\Http\Controllers\v1\Evaluation\QuestionController@indexOptions');
 
+    
     Route::middleware('auth:api')->group(function () {
         Route::get('systems', 'App\Http\Controllers\v1\Evaluation\SystemController@index');
         Route::post('systems', 'App\Http\Controllers\v1\Evaluation\SystemController@create');
+        Route::get('polls', 'App\Http\Controllers\v1\Evaluation\PollController@index');
 
         Route::put('user', 'App\Http\Controllers\v1\Seguridad\UsuarioController@updateAuth');
         Route::get('user', 'App\Http\Controllers\v1\Seguridad\UsuarioController@showAuth');

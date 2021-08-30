@@ -27,13 +27,15 @@ import Initializer from '../store/Initializer'
 import { desencriptarJson } from '../utils/security'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import { cerrarSesion } from '../utils/API/auth';
-import { useLocation, Switch } from 'react-router-dom'; 
+import { useLocation, Switch } from 'react-router-dom';
 import logo from '../assets/logoPeque.png'
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
+        [theme.breakpoints.up('sm')]: {
+            display: 'flex',
+        },
     },
     drawer: {
         [theme.breakpoints.up('sm')]: {
@@ -71,25 +73,25 @@ function ResponsiveDrawer(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const [cambio,setCambio]=React.useState(null)
+    const [cambio, setCambio] = React.useState(null)
     const initializer = useContext(Initializer);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-const cerrar=()=>{
-    cerrarSesion(initializer)
-}
-const comprobador=(val)=>{
+    const cerrar = () => {
+        cerrarSesion(initializer)
+    }
+    const comprobador = (val) => {
 
-        if(location.pathname==val){
-            return {backgroundColor:'#1070CA',borderRadius:7,color:'white',marginRight:5,marginLeft:5}
-        }else{
-            return {borderRadius:7,marginRight:5,marginLeft:5}
+        if (location.pathname == val) {
+            return { backgroundColor: '#2196f3', borderRadius: 7, color: 'white', marginRight: 5, marginLeft: 5 }
+        } else {
+            return { borderRadius: 7, marginRight: 5, marginLeft: 5 }
         }
 
-  
-}
+
+    }
     const drawer = (
         <div >
             <div style={{ marginBottom: 15, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -103,7 +105,7 @@ const comprobador=(val)=>{
                 <div style={{
                     width: '150px',
                     whiteSpace: 'nowrap',
-                    overflow: 'hidden',textAlign: 'center',
+                    overflow: 'hidden', textAlign: 'center',
                     textOverflow: 'ellipsis'
                 }}>
                     <Typography variant="subtitle1" style={{ fontSize: 15, color: '#929396' }}>
@@ -116,89 +118,97 @@ const comprobador=(val)=>{
             </div>
 
             <Divider />
-            <div style={{justifyContent:'space-between',flexDirection:'column',display:'flex',height:'100%'}}>
-                <List style={{padding:10}} >
+            <div style={{ justifyContent: 'space-between', flexDirection: 'column', display: 'flex', height: '100%' }}>
+                <List style={{ padding: 10 }} >
 
                     <ListItem button style={comprobador('/dashboard')}>
                         <ListItemIcon><DashboardIcon /> </ListItemIcon>
                         <ListItemText primary={'Tablero principal'} />
                     </ListItem>
-                    <ListItem button onClick={()=>props.history.push('evaluaciones')} style={comprobador('/evaluaciones')}>
-                        <ListItemIcon style={{color:'inherit'}}><ListIcon style={{color:'inherit'}} /> </ListItemIcon>
+                    <ListItem button onClick={() => props.history.push('evaluaciones')} style={comprobador('/evaluaciones')}>
+                        <ListItemIcon style={{ color: 'inherit' }}><ListIcon style={{ color: 'inherit' }} /> </ListItemIcon>
                         <ListItemText primary={'Evaluaciones'} />
-                        </ListItem>
-                        <ListItem button onClick={()=>props.history.push('sistemas')} style={comprobador('/sistemas')}>
-                        <ListItemIcon style={{color:'inherit'}}><DesktopWindowsIcon style={{color:'inherit'}}/> </ListItemIcon>
+                    </ListItem>
+                    <ListItem button onClick={() => props.history.push('sistemas')} style={comprobador('/sistemas')}>
+                        <ListItemIcon style={{ color: 'inherit' }}><DesktopWindowsIcon style={{ color: 'inherit' }} /> </ListItemIcon>
                         <ListItemText primary={'Sistemas'} />
                     </ListItem>
                 </List>
                 <div>
-                <Divider />
-            <List>
-            <ListItem button >
-                        <ListItemIcon><SettingsIcon /> </ListItemIcon>
-                        <ListItemText primary={'Configuración'} />
-                    </ListItem>
-                    <ListItem button onClick={cerrar}>
-                        <ListItemIcon><ExitToAppIcon /> </ListItemIcon>
-                        <ListItemText primary={'Salir'} />
-                    </ListItem>
-             
-            </List>
+                    <Divider />
+                    <List>
+                        <ListItem button >
+                            <ListItemIcon><SettingsIcon /> </ListItemIcon>
+                            <ListItemText primary={'Configuración'} />
+                        </ListItem>
+                        <ListItem button onClick={cerrar}>
+                            <ListItemIcon><ExitToAppIcon /> </ListItemIcon>
+                            <ListItemText primary={'Salir'} />
+                        </ListItem>
+
+                    </List>
                 </div>
             </div>
 
-           
+
         </div>
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
-console.log(history)
+    console.log(history)
     return (
         <div className={classes.root}>
             <CssBaseline />
 
-{
-// initializer.usuario != null ?
-history.location.pathname!="/bienvenida"&&history.location.pathname!="/login"?
- <nav className={classes.drawer} aria-label="mailbox folders">
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Hidden smUp implementation="css">
-                    <Drawer
-                        container={container}
-                        variant="temporary"
-                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-                <Hidden xsDown implementation="css">
-                    <Drawer
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        variant="permanent"
-                        open
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-            </nav>
-           
- :
-null
-}
-           
-            <main className={history!=null?history.location.pathname!="/bienvenida"?classes.content:"":""}>
+            {
+                // initializer.usuario != null ?
+                history.location.pathname != "/bienvenida" && history.location.pathname != "/login" ?
+                    <nav className={classes.drawer} aria-label="mailbox folders">
+                        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                        <Hidden smUp implementation="css">
+                            <Drawer
+                                container={container}
+                                variant="temporary"
+                                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                                open={mobileOpen}
+                                onClose={handleDrawerToggle}
+                                classes={{
+                                    paper: classes.drawerPaper,
+                                }}
+                                ModalProps={{
+                                    keepMounted: true, // Better open performance on mobile.
+                                }}
+                            >
+                                {drawer}
+                            </Drawer>
+                        </Hidden>
+                        <Hidden xsDown implementation="css">
+                            <Drawer
+                                classes={{
+                                    paper: classes.drawerPaper,
+                                }}
+                                variant="permanent"
+                                open
+                            >
+                                {drawer}
+                            </Drawer>
+                        </Hidden>
+                    </nav>
 
+                    :
+                    null
+            }
+
+            <main className={history != null ? history.location.pathname != "/bienvenida" ? classes.content : "" : ""}>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    className={classes.menuButton}
+                >
+                    <MenuIcon />
+                </IconButton>
                 {props.children}
             </main>
         </div>

@@ -8,14 +8,15 @@ use App\Models\Evaluation;
 use App\Models\Poll;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use \Validator;
 
 class PollController extends Controller
 {
     public function index()
     {
-        $idUser = 1;
-        $data = \DB::select("select * from polls where id_system in (select id from systems where id_user=$idUser)");
+        $idUser = Auth::user();
+        $data = \DB::select("select po.*,sy.name as system from polls po,systems sy where po.id_system =sy.id and po.id_system in (select id from systems where id_user=$idUser->id)");
         return response()->json([
             "status" => "200",
             "data" => $data,
@@ -52,12 +53,12 @@ class PollController extends Controller
             ]);
             foreach ($evaluations as $val) {
                 $evalua = Evaluation::create([
-                    'id_metric' => $val['metric'],
+                    'id_metric' => $val['id_metric'],
                     'id_pool' => $poll->id,
                     'score' => $val['score']
                 ]);
 
-                $this->saveAnswers(null,$evalua->id,$val['question'],$val['option']);
+                $this->saveAnswers(null,$evalua->id,$val['id_question'],$val['id_option']);
             }
             return response()->json([
                 "status" => "200",
@@ -93,11 +94,17 @@ class PollController extends Controller
     public function show($id)
     {
         $data = Poll::find($id);
+        $data2 = \DB::select("select * from evaluations where id_pool=$id");
+        $data3 = \DB::select("select an.*,eva.id_metric as id_metric from answers an,evaluations eva where eva.id=an.id_evaluation and an.id_evaluation in (select id from evaluations where id_pool=$id)");
         if (!is_null($data)) {
             return response()->json([
                 "status" => "200",
                 "message" => 'Datos obtenidos con éxito',
-                "data" => $data,
+                "data" => ([
+                    "poll"=>$data,
+                    "evaluations"=>$data2,
+                    "answers"=>$data3
+                ]),
                 "type" => 'success'
             ]);
         } else {
