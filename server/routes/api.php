@@ -39,6 +39,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('metrics', 'App\Http\Controllers\v1\Evaluation\MetricController@index');
     Route::get('questions', 'App\Http\Controllers\v1\Evaluation\QuestionController@index');
     Route::get('options', 'App\Http\Controllers\v1\Evaluation\QuestionController@indexOptions');
+    Route::get('showByPoll/{id}', 'App\Http\Controllers\v1\Evaluation\MetricController@showByPoll');
 
     
     Route::middleware('auth:api')->group(function () {

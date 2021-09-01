@@ -68,14 +68,14 @@ class PollController extends Controller
                 }
                 $totalEvaF=$totalEva/(count($val['answers'])!=0?count($val['answers']):1);
                 $ev =Evaluation::find($evalua->id);
-                $ev->score=$totalEvaF;
+                $ev->score=round($totalEvaF, 2);
                 $ev->save();
 
                 $totalPoll+=$totalEvaF;
             }
             $totalPollF=$totalPoll/(count($evaluations)!=0?count($evaluations):0);
             $po = Poll::find($poll->id);
-            $po->score=$totalPollF;
+            $po->score=round($totalPollF,2);
             $po->save();
             return response()->json([
                 "status" => "200",

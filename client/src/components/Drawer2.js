@@ -87,7 +87,13 @@ function ResponsiveDrawer(props) {
         if (location.pathname == val) {
             return { backgroundColor: '#2196f3', borderRadius: 7, color: 'white', marginRight: 5, marginLeft: 5 }
         } else {
-            return { borderRadius: 7, marginRight: 5, marginLeft: 5 }
+            if(location.pathname =="/evaluacion"&&val=="/evaluaciones"){
+                return { backgroundColor: '#2196f3', borderRadius: 7, color: 'white', marginRight: 5, marginLeft: 5 }
+
+            }else{
+                return { borderRadius: 7, marginRight: 5, marginLeft: 5 }
+
+            }
         }
 
 

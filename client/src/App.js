@@ -26,6 +26,8 @@ import Drawer2 from './components/Drawer2'
 import Bienvenida from './containers/main/Bienvenida'
 
 import Evaluaciones from './containers/panel/Evaluaciones'
+import Evaluacion from './containers/panel/Evaluacion'
+
 import Sistemas from './containers/panel/Sistemas'
 
 function Alert(props) {
@@ -159,6 +161,8 @@ export default function App(props) {
                 <Switch>
                   <Route exact path="/bienvenida" component={Bienvenida} />
                   <Route exact path="/evaluaciones" component={Evaluaciones} />
+                  <Route exact path="/evaluacion" component={Evaluacion} />
+
                   <Route exact path="/sistemas" component={Sistemas} />
 
 

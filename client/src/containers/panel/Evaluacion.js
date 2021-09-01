@@ -19,8 +19,12 @@ import { Grid } from '@material-ui/core';
 import { obtenerTodos } from '../../utils/API/evaluaciones.js';
 import CrearEvaluacion from './components/CrearEvaluacion'
 import Eliminar from './components/EliminarEvaluacion'
+import { obtenerTodosPorPoll } from '../../utils/API/metricas';
 
-export default function Evaluaciones(props) {
+export default function Evaluacion(props) {
+    console.log(props)
+    const dato = props.location.state;
+
     const initializer = React.useContext(Initializer);
 
     const [data, setData] = React.useState([])
@@ -30,9 +34,16 @@ export default function Evaluaciones(props) {
 
     React.useEffect(() => {
         if (initializer.usuario != null) {
-            obtenerTodos(setData, initializer)
+            if (dato != null) {
+                obtenerTodosPorPoll(dato.id, setData, initializer)
+            }
+
         }
     }, [initializer.usuario])
+    if (props.location.state == null) {
+        props.history.push("/evaluaciones");
+        return null;
+    }
     const carga = () => {
         obtenerTodos(setData, initializer)
         setSelected(null)
@@ -43,42 +54,33 @@ export default function Evaluaciones(props) {
             <Eliminar sistema={selected} setOpen={setOpen2} open={open2} carga={carga} />
             <Grid item xs={12} md={12}>
                 <Typography variant="h5" >
-                    Evaluaciones
+                    Evaluacion {dato != null ? dato.name : ""}
                 </Typography>
             </Grid>
 
             <Grid item xs={12} md={12} style={{ display: 'flex', marginTop: 10 }}>
 
-                <Card style={{ width: 300, height: 120, marginRight: 20, marginBottom: 5 }}>
-                    <CardContent>
-                        <Typography variant="subtitle1" gutterBottom>
-                            Totales
-                        </Typography>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="h4" gutterBottom>
-                                {data.length}
-                            </Typography>
-                            <Avatar variant="rounded" style={{ backgroundColor: '#EC4C47', borderRadius: 20 }} >
-                                <DesktopWindowsIcon />
-                            </Avatar>
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card style={{ width: 300, height: 120 }}>
-                    <CardContent>
-                        <Typography variant="subtitle1" gutterBottom>
-                            Total cumplimiento
-                        </Typography>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="h4" gutterBottom>
-                                0
-                            </Typography>
-                            <Avatar variant="rounded" style={{ backgroundColor: '#47B881', borderRadius: 20 }} >
-                                <EqualizerIcon />
-                            </Avatar>
-                        </div>
-                    </CardContent>
-                </Card>
+                {
+                    data.map((e) => (
+                        <Card style={{ width: 300, height: 120, marginRight: 20, marginBottom: 5 }}>
+                            <CardContent>
+                                <Typography variant="subtitle1" gutterBottom>
+                                    {e.metric}
+                                </Typography>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Typography variant="h4" gutterBottom>
+                                        {e.score}%
+                                    </Typography>
+                                    <Avatar variant="rounded" style={{ backgroundColor: '#EC4C47', borderRadius: 20 }} >
+                                        <EqualizerIcon />
+                                    </Avatar>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))
+                }
+
+               
 
             </Grid>
             <Grid item xs={12} md={12} >
@@ -92,21 +94,18 @@ export default function Evaluaciones(props) {
                         style={{ width: '100%', marginRight: 20 }}
                         variant="outlined"
                     />
-                    <Button onClick={() => setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
-                        Nuevo
-                    </Button>
+
                 </div>
 
             </Grid>
-         
+
             <Grid item xs={12}>
                 <MaterialTable
                     icons={TableIcons}
                     columns={[
 
-                        { title: "Nombre", field: "name" },
+                        { title: "Característica", field: "metric" },
                         { title: "Sistema", field: "system" },
-                        { title: "Descripción", field: "descripcion" },
 
                         { title: "Puntaje", field: "score" },
                         { title: "Fecha", field: "created_at", type: "datetime" },
@@ -118,36 +117,6 @@ export default function Evaluaciones(props) {
 
                     localization={LocalizationTable}
 
-                    actions={[
-                        {
-                            icon: TableIcons.VisibilityOutlinedIcon,
-                            tooltip: 'Ver métricas',
-
-                            onClick: (event, rowData) => {
-                                props.history.push("/evaluacion",rowData)
-                            }
-                        },
-                        {
-                            icon: TableIcons.Edit,
-                            tooltip: 'Editar',
-
-                            onClick: (event, rowData) => {
-                                setSelected(rowData)
-                                setOpen(true)
-                            }
-                        },
-
-                        {
-                            icon: TableIcons.Delete,
-                            tooltip: "Borrar",
-
-                            onClick: (event, rowData) => {
-                                setSelected(rowData)
-                                setOpen2(true)
-                            }
-                        },
-
-                    ]}
 
                     options={{
                         showTitle: false,
