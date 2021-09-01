@@ -106,7 +106,7 @@ export default function Sistemas(props) {
                         { title: "Nombre", field: "name" },
                         { title: "Url", field: "url" },
                         { title: "Descripción", field: "description" },
-                        { title: "Evaluaciones", field: "evaluations" },
+                        { title: "Evaluaciones", field: "evaluaciones" },
                         { title: "Fecha", field: "created_at", type: "datetime" },
 
 

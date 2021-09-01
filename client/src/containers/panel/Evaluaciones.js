@@ -120,6 +120,14 @@ export default function Evaluaciones(props) {
 
                     actions={[
                         {
+                            icon: TableIcons.VisibilityOutlinedIcon,
+                            tooltip: 'Ver métricas',
+
+                            onClick: (event, rowData) => {
+                            
+                            }
+                        },
+                        {
                             icon: TableIcons.Edit,
                             tooltip: 'Editar',
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Evaluation;
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
 use App\Models\Evaluation;
+use App\Models\Option;
 use App\Models\Poll;
 use Illuminate\Http\Request;
 use DB;
@@ -51,15 +52,31 @@ class PollController extends Controller
                 'descripcion' => $description,
                 'score' => 0
             ]);
+            $totalPoll=0;
             foreach ($evaluations as $val) {
+
                 $evalua = Evaluation::create([
                     'id_metric' => $val['id_metric'],
                     'id_pool' => $poll->id,
-                    'score' => $val['score']
+                    'score' => 0
                 ]);
+                $totalEva=0;
+                foreach ($val['answers'] as $val2) {
+                    $this->saveAnswers(null,$evalua->id,$val2['id_question'],$val2['id_option']);
+                    $op = Option::find($val2['id_option']);
+                    $totalEva+=$op->score;
+                }
+                $totalEvaF=$totalEva/(count($val['answers'])!=0?count($val['answers']):1);
+                $ev =Evaluation::find($evalua->id);
+                $ev->score=$totalEvaF;
+                $ev->save();
 
-                $this->saveAnswers(null,$evalua->id,$val['id_question'],$val['id_option']);
+                $totalPoll+=$totalEvaF;
             }
+            $totalPollF=$totalPoll/(count($evaluations)!=0?count($evaluations):0);
+            $po = Poll::find($poll->id);
+            $po->score=$totalPollF;
+            $po->save();
             return response()->json([
                 "status" => "200",
                 "message" => 'Registro exitoso',

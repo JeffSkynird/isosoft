@@ -12,7 +12,9 @@ class SystemController extends Controller
 
     public function index(){
         $user = Auth::user();
-        $data = System::where('id_user', $user->id)->orderBy('created_at')->get();
+        //$data = System::where('id_user', $user->id)->orderBy('created_at')->get();
+        $data = \DB::select("select count(po.*) as evaluaciones,sys.id,sys.name,sys.url,sys.description,sys.created_at from systems sys left join polls po on sys.id=po.id_system where sys.id_user=$user->id group by sys.id ");
+
         return response()->json([
             "status" => "200",
             "data"=>$data,

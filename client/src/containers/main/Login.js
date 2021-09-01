@@ -61,11 +61,11 @@ export default function SignIn() {
                                 {
                                     tab==0?
                                     <Typography variant="subtitle1" style={{ fontSize: 12, color: '#929396' }}>
-                                    ¿No tienes cuenta? <span style={{cursor:"pointer"}} onClick={() =>setTab(1)}>Registrate</span>
+                                    ¿No tienes cuenta? <span style={{cursor:"pointer",color:'#2196f3'}} onClick={() =>setTab(1)}>Registrate</span>
                                 </Typography>
                                     :
                                     <Typography variant="subtitle1" style={{ fontSize: 12, color: '#929396' }}>
-                                   Tienes una cuenta?  <span style={{cursor:"pointer"}} onClick={() =>setTab(0)}>Inicia sesión</span>
+                                   Tienes una cuenta?  <span style={{cursor:"pointer",color:'#2196f3'}} onClick={() =>setTab(0)}>Inicia sesión</span>
                                 </Typography>
                                 }
                            

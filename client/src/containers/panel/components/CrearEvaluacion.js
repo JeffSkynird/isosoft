@@ -5,6 +5,8 @@ import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -73,13 +75,29 @@ export default function FullScreenDialog(props) {
     const actualizarEval=(ev)=>{
         setEvalu(ev)
     }
+    const tomarValor=(id_metric)=>{
+        let tp =[]
+        evalu.map((e)=>{
+            if(e.id_metric==id_metric){
+                tp.push({...e})
+            }
+        })
+        return tp
+    }
     const guardar=()=>{
         if(datos==null){
-            evaluar({ name:nombre,
+            let ar=[]
+            evalu.map((e)=>{
+                if(!ar.some(c => c.id_metric == e.id_metric)){
+                    ar.push({id_metric:e.id_metric,answers:tomarValor(e.id_metric)})
+                }
+               
+            })
+           evaluar({ name:nombre,
                 system:sistema,
                 description:descripcion,
-                evaluations:evalu
-            },initializer)
+                evaluations:ar
+            },initializer) 
         }
         
         setEvalu([])
@@ -98,6 +116,15 @@ export default function FullScreenDialog(props) {
         props.setOpen(false)
         props.carga()
         setDatos(null)
+    }
+    const getName = (id) => {
+        let object = null
+        sistemas.map((e) => {
+            if (id == e.id) {
+                object = { ...e }
+            }
+        })
+        return object
     }
     return (
 
@@ -119,28 +146,29 @@ export default function FullScreenDialog(props) {
             {
                 tab == 0 ?
                     <Grid container style={{ padding: 10, marginTop: 10 }}>
+                    
                         <Grid item xs={12} md={12} style={{ display: 'flex' }}>
-                            <FormControl style={{ width: '100%', marginRight: 10 }} variant="outlined" size="small" className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-outlined-label">Seleccione un sistema</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-outlined-label"
-                                    id="demo-simple-select-outlined"
-                                    value={sistema}
-                                    onChange={(e) => setSistema(e.target.value)}
-                                    label="Seleccione un sistema"
-                                >
-                                    <MenuItem value="">
-                                        <em>Seleccione una opción</em>
-                                    </MenuItem>
-                                    {
-                                        sistemas.map((e) => (
-                                            <MenuItem value={e.id}>
-                                                <em>{e.name}</em>
-                                            </MenuItem>
-                                        ))
+                        <Autocomplete
+                             size="small"
+                            style={{ width: '100%', marginRight: 10 }}
+                                options={sistemas}
+                                value={getName(sistema)}
+                                getOptionLabel={(option) => option.name}
+                                onChange={(event, value) => {
+                                    if (value != null) {
+
+                                        setSistema(value.id)
+                                    } else {
+
+                                        setSistema('')
+
                                     }
-                                </Select>
-                            </FormControl>
+
+                                }} // prints the selected value
+                                renderInput={params => (
+                                    <TextField {...params} label="Seleccione un sistema" variant="outlined" fullWidth />
+                                )}
+                            />
                             <Button disabled={sistema == ""||nombre==""||descripcion==""} onClick={() => empezar()} startIcon={<ExitToAppIcon />} variant="contained" size="small" color="primary">
                                 Empezar
                             </Button>

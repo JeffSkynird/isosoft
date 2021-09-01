@@ -30,13 +30,19 @@ export default function Crear(props) {
     const guardar=()=>{
         if(props.sistema==null){
             registrarSistema({name:nombre,url:url,description:descripcion},initializer)
-
+            limpiar()
         }else{
             editarSistema(props.sistema.id,{name:nombre,url:url,description:descripcion},initializer)
+            limpiar()
 
         }
         props.setOpen(false)
         props.carga()
+    }
+    const limpiar=()=>{
+        setNombre("")
+        setUrl("")
+        setDescripcion("")
     }
     return (
         <Dialog

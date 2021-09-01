@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 export default function Bienvenida(props) {
     return (
-        <div style={{height:'100%'}}>
+        <div style={{height:'100%',width:'100%'}}>
             <div style={{ display: 'flex', justifyContent: 'space-between',padding:15 }}>
                 <img src={logo} style={{ marginBottom: 15, height: 30, width: 124 }} alt="" srcset="" />
 
