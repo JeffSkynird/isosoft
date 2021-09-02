@@ -49,7 +49,10 @@ export default function Crear(props) {
             open={props.open}
             TransitionComponent={Transition}
             keepMounted
-            onClose={() => props.setOpen(false)}
+            onClose={() => {
+                props.setOpen(false)
+                limpiar()
+            }}
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
         >

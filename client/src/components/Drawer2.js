@@ -131,14 +131,15 @@ function ResponsiveDrawer(props) {
                         <ListItemIcon><DashboardIcon /> </ListItemIcon>
                         <ListItemText primary={'Tablero principal'} />
                     </ListItem>
-                    <ListItem button onClick={() => props.history.push('evaluaciones')} style={comprobador('/evaluaciones')}>
-                        <ListItemIcon style={{ color: 'inherit' }}><ListIcon style={{ color: 'inherit' }} /> </ListItemIcon>
-                        <ListItemText primary={'Evaluaciones'} />
-                    </ListItem>
                     <ListItem button onClick={() => props.history.push('sistemas')} style={comprobador('/sistemas')}>
                         <ListItemIcon style={{ color: 'inherit' }}><DesktopWindowsIcon style={{ color: 'inherit' }} /> </ListItemIcon>
                         <ListItemText primary={'Sistemas'} />
                     </ListItem>
+                    <ListItem button onClick={() => props.history.push('evaluaciones')} style={comprobador('/evaluaciones')}>
+                        <ListItemIcon style={{ color: 'inherit' }}><ListIcon style={{ color: 'inherit' }} /> </ListItemIcon>
+                        <ListItemText primary={'Evaluaciones'} />
+                    </ListItem>
+                 
                 </List>
                 <div>
                     <Divider />

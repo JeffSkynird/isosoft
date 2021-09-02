@@ -27,6 +27,7 @@ export default function Sistemas(props) {
     const [open, setOpen] = React.useState(false)
     const [open2, setOpen2] = React.useState(false)
     const [selected, setSelected] = React.useState(null)
+    const [selected2, setSelected2] = React.useState(null)
 
     React.useEffect(() => {
         if (initializer.usuario != null) {
@@ -36,11 +37,12 @@ export default function Sistemas(props) {
     const carga = () => {
         obtenerTodos(setData, initializer)
         setSelected(null)
+        setSelected2(null)
     }
     return (
         <Grid container spacing={2}>
             <Crear sistema={selected} setOpen={setOpen} open={open} carga={carga} />
-            <Eliminar sistema={selected} setOpen={setOpen2} open={open2} carga={carga} />
+            <Eliminar sistema={selected2} setOpen={setOpen2} open={open2} carga={carga} />
             <Grid item xs={12} md={12}>
                 <Typography variant="h5" >
                     Sistemas
@@ -135,7 +137,7 @@ export default function Sistemas(props) {
                             tooltip: "Borrar",
 
                             onClick: (event, rowData) => {
-                                setSelected(rowData)
+                                setSelected2(rowData)
                                 setOpen2(true)
                             }
                         },

@@ -27,6 +27,7 @@ export default function Evaluaciones(props) {
     const [open, setOpen] = React.useState(false)
     const [open2, setOpen2] = React.useState(false)
     const [selected, setSelected] = React.useState(null)
+    const [selected2, setSelected2] = React.useState(null)
 
     React.useEffect(() => {
         if (initializer.usuario != null) {
@@ -36,11 +37,32 @@ export default function Evaluaciones(props) {
     const carga = () => {
         obtenerTodos(setData, initializer)
         setSelected(null)
+        setSelected2(null)
+    }
+    const color=(val)=>{
+        console.log(val)
+        if(parseFloat(val)>=80){
+            return "#47B881"
+        }else if(parseFloat(val)<=79&&parseFloat(val)>=45){
+            return "#DFB733"
+        }else if(parseFloat(val)<=25){
+            return "#EC4C47"
+        }else{
+            return "#E4E7EB"
+        }
+    }
+    const totalCumplimiento=()=>{
+        let t=0
+        data.map((e)=>{
+            t+=e.score
+        })
+        let f =t/data!=0?data.length:1
+        return f
     }
     return (
         <Grid container spacing={2}>
             <CrearEvaluacion sistema={selected} setOpen={setOpen} open={open} carga={carga} />
-            <Eliminar sistema={selected} setOpen={setOpen2} open={open2} carga={carga} />
+            <Eliminar sistema={selected2} setOpen={setOpen2} open={open2} carga={carga} />
             <Grid item xs={12} md={12}>
                 <Typography variant="h5" >
                     Evaluaciones
@@ -71,7 +93,7 @@ export default function Evaluaciones(props) {
                         </Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="h4" gutterBottom>
-                                0
+                                {totalCumplimiento()}
                             </Typography>
                             <Avatar variant="rounded" style={{ backgroundColor: '#47B881', borderRadius: 20 }} >
                                 <EqualizerIcon />
@@ -108,7 +130,12 @@ export default function Evaluaciones(props) {
                         { title: "Sistema", field: "system" },
                         { title: "Descripción", field: "descripcion" },
 
-                        { title: "Puntaje", field: "score" },
+                        { title: "Puntaje", field: "score" ,render: rowData =>  <div style={{display:'flex',alignItems:'center',height:12,backgroundColor:'gray',borderRadius:3,marginTop:5,width:50}}>
+                        <div style={{backgroundColor:color(rowData.score),height:12,borderRadius:3,width:rowData.score+"%"}}>
+                           
+                        </div>
+                        <span style={{position:'absolute',color:'white',fontWeight:'bold',fontSize:10,marginLeft:10}}>{rowData.score}%</span>
+                    </div>  },
                         { title: "Fecha", field: "created_at", type: "datetime" },
 
                     ]}
@@ -142,7 +169,7 @@ export default function Evaluaciones(props) {
                             tooltip: "Borrar",
 
                             onClick: (event, rowData) => {
-                                setSelected(rowData)
+                                setSelected2(rowData)
                                 setOpen2(true)
                             }
                         },
