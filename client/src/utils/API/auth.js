@@ -39,6 +39,40 @@ export const registrar = (data, setTab,store) => {
 
     });
 }
+export const editarUsuario = (data, store) => {
+  const { usuario, mostrarNotificacion, mostrarLoader } = store;
+ 
+
+  let url = ENTRYPOINT+"user";
+  let setting = {
+    method: "PUT",
+    url: url,
+    params:data,
+    data: data,
+    body: data,
+    headers: { Accept: "application/json",  Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, },
+  };
+  mostrarLoader(true);
+
+  axios(setting)
+    .then((res) => {
+      let response = res.data;
+      if (response.type != "error") {
+       
+        mostrarLoader(false);
+        mostrarNotificacion({ type: "success", message: response.message });
+        window.location.reload();
+      } else {
+        mostrarNotificacion({ type: "error", message: response.message });
+        mostrarLoader(false);
+      }
+    })
+    .catch((error) => {
+      mostrarLoader(false);
+
+      mostrarNotificacion({ type: "error", message: error.message });
+    });
+};
 export const iniciarSesion = (email, password, store,history) => {
   const { cargarUsuario ,playSound,mostrarNotificacion,mostrarLoader} = store
   var raw = {
@@ -126,4 +160,35 @@ export const cerrarSesion = (store) => {
 
    
     });
+}
+export const obtenerUsuario = (setData,store) => {
+  const { usuario, cargarUsuario, mostrarNotificacion, mostrarLoader } = store;
+
+
+let url = ENTRYPOINT+"user"
+let setting = {
+  method: "Get",
+  url: url,
+  headers: { 'Accept': 'application/json',
+  Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, }
+
+};
+
+
+axios(setting)
+  .then((res) => {
+    let response = res.data
+   if(response.type!="error"){
+      setData(response.data)
+   
+
+   }else{
+   
+   }
+  })
+  .catch((error) => {
+   
+
+
+  });
 }

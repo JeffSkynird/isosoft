@@ -26,7 +26,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Initializer from '../store/Initializer'
 import { desencriptarJson } from '../utils/security'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
-import { cerrarSesion } from '../utils/API/auth';
+import { cerrarSesion, obtenerUsuario } from '../utils/API/auth';
 import { useLocation, Switch } from 'react-router-dom';
 import logo from '../assets/logoPeque.png'
 const drawerWidth = 240;
@@ -74,8 +74,19 @@ function ResponsiveDrawer(props) {
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [cambio, setCambio] = React.useState(null)
+    const [info, setInfo] = React.useState(null)
+    const [names,setNames]=React.useState('')
     const initializer = useContext(Initializer);
-
+    React.useEffect(()=>{
+        if (initializer.usuario != null) {
+        obtenerUsuario(setInfo,initializer)
+        }
+    }, [initializer.usuario])
+    React.useEffect(()=>{
+        if (info!= null) {
+            setNames(info.names+" "+info.last_names)
+        }
+    }, [info])
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -115,7 +126,7 @@ function ResponsiveDrawer(props) {
                     textOverflow: 'ellipsis'
                 }}>
                     <Typography variant="subtitle1" style={{ fontSize: 15, color: '#929396' }}>
-                        {initializer.usuario != null ? JSON.parse(desencriptarJson(initializer.usuario)).user.names + " " + JSON.parse(desencriptarJson(initializer.usuario)).user.last_names : ""}
+                        {names}
                     </Typography>
 
                 </div>
@@ -141,11 +152,12 @@ function ResponsiveDrawer(props) {
                     </ListItem>
                  
                 </List>
+
                 <div>
                     <Divider />
                     <List>
-                        <ListItem button >
-                            <ListItemIcon><SettingsIcon /> </ListItemIcon>
+                        <ListItem button onClick={() => props.history.push('ajustes')}  style={comprobador('/ajustes')} >
+                            <ListItemIcon style={{ color: 'inherit' }}><SettingsIcon /> </ListItemIcon>
                             <ListItemText primary={'Configuración'} />
                         </ListItem>
                         <ListItem button onClick={cerrar}>
