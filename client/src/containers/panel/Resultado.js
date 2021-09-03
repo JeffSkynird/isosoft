@@ -100,7 +100,7 @@ export default function Resultado(props) {
                         Evaluacion  {data.length != 0 ? data.poll : "N/A"}
                     </Typography>
                     <IconButton aria-label="Cancelar" onClick={handleClose}>
-                        <ArrowBackIcon />
+                        <ArrowBackIcon color="primary" />
                     </IconButton>
                 </div>
 
@@ -162,12 +162,7 @@ export default function Resultado(props) {
                     </CardContent>
                 </Card>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Aceptar
-                </Button>
-
-            </DialogActions>
+       
         </Dialog>
 
     )

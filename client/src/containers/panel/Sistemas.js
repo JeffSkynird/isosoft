@@ -152,6 +152,7 @@ export default function Sistemas(props) {
                     ]}
 
                     options={{
+                        pageSize:10,
                         showTitle: false,
                         actionsColumnIndex: -1,
                         search: false,

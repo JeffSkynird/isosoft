@@ -156,6 +156,7 @@ export default function FullScreenDialog(props) {
                     
                         <Grid item xs={12} md={12} style={{ display: 'flex' }}>
                         <Autocomplete
+                        disabled={datos!=null}
                              size="small"
                             style={{ width: '100%', marginRight: 10 }}
                                 options={sistemas}
@@ -194,7 +195,7 @@ export default function FullScreenDialog(props) {
                             <TextField
                                 variant="outlined"
                                 style={{ marginBottom: 10, width: '100%' }}
-                                size="small"
+                             
                                 label="Descripción"
                                 value={descripcion}
                                 onChange={(e) => setDescripcion(e.target.value)}

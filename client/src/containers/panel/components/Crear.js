@@ -85,8 +85,7 @@ export default function Crear(props) {
                         variant="outlined"
 
                         style={{ marginBottom: 10,width:'100%' }}
-                        size="small"
-
+                   
                         label="Descripción"
 
                         value={descripcion}

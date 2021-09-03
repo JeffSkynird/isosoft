@@ -9,7 +9,29 @@ use Illuminate\Http\Request;
 use \Validator;
 class SystemController extends Controller
 {
-
+    public function obtenerResultado(){
+        $user = Auth::user();
+        $data = \DB::select("select sys.name,count(po.id) from  polls po, systems sys where po.id_system=sys.id and sys.id_user=$user->id group by sys.name");
+        $dataF=array();
+       
+        $dataF2=array();
+        foreach ($data as $val) {
+            array_push($dataF,$val->name);
+            array_push($dataF2,floatval($val->count));
+        }
+       
+        return response()->json([
+            "status" => "200",
+            "data" => array(
+                    'system'=>$dataF,
+                    'count'=>$dataF2
+                
+            ),
+            "message" => 'Información obtenida con exitoso',
+            "type" => 'success'
+        ]);
+    }
+    
     public function index(){
         $user = Auth::user();
         //$data = System::where('id_user', $user->id)->orderBy('created_at')->get();

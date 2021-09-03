@@ -108,7 +108,7 @@ export default function Evaluacion(props) {
                                     Evaluacion {dato != null ? dato.name : ""}
                                 </Typography>
                                 <IconButton aria-label="Cancelar" onClick={() => props.history.goBack()}>
-                                    <ArrowBackIcon />
+                                    <ArrowBackIcon  color="primary"/>
                                 </IconButton>
                             </Grid>
                             <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>

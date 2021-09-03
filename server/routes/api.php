@@ -49,6 +49,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('metrics_systems', 'App\Http\Controllers\v1\Evaluation\PollController@obtenerSistemasMetricas');
 
         
+        Route::get('systems_evaluations', 'App\Http\Controllers\v1\Evaluation\SystemController@obtenerResultado');
+
         Route::get('systems', 'App\Http\Controllers\v1\Evaluation\SystemController@index');
         Route::post('systems', 'App\Http\Controllers\v1\Evaluation\SystemController@create');
         Route::get('polls', 'App\Http\Controllers\v1\Evaluation\PollController@index');

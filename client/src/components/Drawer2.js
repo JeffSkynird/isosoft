@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('sm')]: {
             display: 'flex',
         },
+        overflow:'hidden'
     },
     drawer: {
         [theme.breakpoints.up('sm')]: {

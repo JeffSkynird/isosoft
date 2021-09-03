@@ -17,7 +17,7 @@ import Tab from '@material-ui/core/Tab';
 import { LocalizationTable, TableIcons, removeAccent } from '../../utils/table.js'
 import MaterialTable from "material-table";
 import { Grid } from '@material-ui/core';
-import { obtenerTodos } from '../../utils/API/sistemas.js';
+import { obtenerSistemaEvaluaciones, obtenerTodos } from '../../utils/API/sistemas.js';
 import Crear from './components/Crear'
 import Eliminar from './components/Eliminar'
 import { obtenerMetricasSistemas, obtenerPanelResult } from '../../utils/API/evaluaciones';
@@ -26,7 +26,8 @@ import Box from '@material-ui/core/Box';
 import Tab2 from './components/Tab2';
 import { obtenerTodos as obtenerTodosS } from '../../utils/API/sistemas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import Radio from './components/Radio';
+import noValue from '../../assets/noValue.svg'
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -58,6 +59,8 @@ export default function Sistemas(props) {
     const [selected2, setSelected2] = React.useState(null)
     const [values, setValues] = React.useState([])
     const [labels, setLabels] = React.useState([])
+    const [values2, setValues2] = React.useState([])
+    const [labels2, setLabels2] = React.useState([])
     const [value, setValue] = React.useState(0);
     const [sistemas, setSistemas] = React.useState([])
     const [sistema, setSistema] = React.useState('')
@@ -69,6 +72,8 @@ export default function Sistemas(props) {
             obtenerPanelResult(setData,setLabels,setValues, initializer)
             obtenerTodosS(setSistemas, initializer)
             obtenerMetricasSistemas(setData1, initializer)
+            obtenerSistemaEvaluaciones(setLabels2,setValues2,initializer)
+
         }
     }, [initializer.usuario])
     const carga = () => {
@@ -101,7 +106,7 @@ export default function Sistemas(props) {
             <Eliminar sistema={selected2} setOpen={setOpen2} open={open2} carga={carga} />
             <Grid item xs={12} md={12}>
                 <Typography variant="h5" >
-                    Sistemas
+                    Panel
                 </Typography>
             </Grid>
 
@@ -142,22 +147,45 @@ export default function Sistemas(props) {
             <Grid item md={12} xs={12}>
             <div style={{ marginTop: 15 }} >
                         {
-                            labels.length != 0 && values.length != 0 && (
+                            labels.length != 0 && values.length != 0 ?(
                                 <Bar values={values} labels={labels} />
                             )
+                            :
+                            <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+
+                                <img src={noValue} width={150} height={150} alt="" srcset="" />
+                                <p>No hay registros</p>
+                            </div>
                         }
                     </div>
 
          
             </Grid>
-            <Grid item md={12} xs={12}>
+            <Grid item md={6} xs={12} style={{display:'flex',justifyContent:'center'}}>
+    
+                        {
+                            labels2.length != 0 && values2.length != 0 ? (
+                                <Radio values={values2} labels={labels2} />
+                            )
+                            :
+                            <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+
+                                <img src={noValue} width={150} height={150} alt="" srcset="" />
+                                <p>No hay registros</p>
+                            </div>
+                        }
+        
+
+            </Grid>
+            <Grid item md={6} xs={12}>
                 <MaterialTable
                     icons={TableIcons}
                     columns={[
 
                         { title: "Sistema", field: "name" },
 
-                        { title: "Puntaje", field: "avg" },
+                        { title: "Puntaje", field: "avg",render: rowData =><span >{rowData.avg}%</span>
+                    }, 
 
 
 
@@ -234,7 +262,7 @@ export default function Sistemas(props) {
 
                 />
             </Grid>
-      
+         
         </Grid>
     )
 }

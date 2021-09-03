@@ -37,7 +37,7 @@ class PollController extends Controller
             $dat=$this->obtenerSistemasMetricas($val->id);
            array_push($total,array(
                "name"=>$val->name,
-               "avg"=>$val->avg,
+               "avg"=>round($val->avg,2),
                "detail"=>$dat
            ));
         }
@@ -63,7 +63,7 @@ class PollController extends Controller
         $values=array();
         foreach ($data as $val) {
             array_push($labels,$val->title);
-            array_push($values,floatval($val->score));
+            array_push($values,round(floatval($val->score),2));
         }
        
         return response()->json([
@@ -86,7 +86,7 @@ class PollController extends Controller
         $dataF2=array();
         foreach ($data as $val) {
             array_push($dataF,$val->name);
-            array_push($dataF2,floatval($val->score));
+            array_push($dataF2,round(floatval($val->score),2));
         }
        
         return response()->json([

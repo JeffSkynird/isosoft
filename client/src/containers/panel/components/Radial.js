@@ -6,6 +6,8 @@ export default function Radial(props) {
 
         series: [props.values],
         options: {
+            
+         
             chart: {
                 height: 200,
                 type: 'radialBar',
@@ -23,7 +25,11 @@ export default function Radial(props) {
 
     })
     return (
-        <Chart options={state.options} series={state.series} type="radialBar" height={200} width={200} />
+        <div>
+            <span>Evaluaciones por sistemas</span>
+            <Chart options={state.options} series={state.series} type="radialBar" height={200} width={200} />
+
+        </div>
 
     )
 }

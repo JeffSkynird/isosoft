@@ -7,6 +7,8 @@ import Bar from './Bar'
 import Initializer from '../../../store/Initializer'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { LocalizationTable, TableIcons } from '../../../utils/table'
+import MaterialTable from 'material-table'
 
 export default function Tab2(props) {
     const initializer = React.useContext(Initializer);
@@ -37,7 +39,7 @@ export default function Tab2(props) {
         }
     }, [metrics])
     return (
-        <Grid container >
+        <Grid container spacing={2} >
             <Grid item xs={12} md={12} style={{ display: 'flex' }}>
                 <Autocomplete
                     size="small"
@@ -67,14 +69,59 @@ export default function Tab2(props) {
                 />
 
             </Grid>
-            <Grid item xs={12} md={12} >
-            <div style={{ marginTop: 15 }} >
-                {
-                    labels.length != 0 && values.length != 0 && (
-                        <Bar values={values} labels={labels} />
-                    )
-                }
-                </div></Grid>
+            <Grid item xs={12} md={6} >
+                <div style={{ marginTop: 15 }} >
+                    {
+                        labels.length != 0 && values.length != 0 && (
+                            <Bar values={values} labels={labels} />
+                        )
+                    }
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <MaterialTable
+                    icons={TableIcons}
+                    columns={[
+
+                        { title: "Título", field: "title" },
+                        { title: "Puntaje", field: "score" }
+
+
+
+
+                    ]}
+                    data={
+                        data
+                    }
+
+                    localization={LocalizationTable}
+
+                    options={{
+                        pageSize: 10,
+                        paging: false,
+
+                        toolbar: false,
+                        showTitle: false,
+                        actionsColumnIndex: -1,
+                        search: false,
+                        maxBodyHeight: 350,
+                        padding: 'dense',
+                        headerStyle: {
+                            textAlign: 'left'
+                        },
+                        cellStyle: {
+                            textAlign: 'left'
+                        },
+                        searchFieldStyle: {
+
+                            padding: 5
+                        }
+                    }}
+
+                />
+            </Grid>
+
+
         </Grid>
     )
 }

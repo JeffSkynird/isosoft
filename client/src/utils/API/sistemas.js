@@ -131,4 +131,35 @@ export const obtenerTodos = (setData,store) => {
 
     });
 }
+export const obtenerSistemaEvaluaciones = (setLabels,setValues,store) => {
+  const { usuario, cargarUsuario, mostrarNotificacion, mostrarLoader } = store;
 
+
+let url = ENTRYPOINT+"systems_evaluations"
+let setting = {
+  method: "Get",
+  url: url,
+  headers: { 'Accept': 'application/json',
+  Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, }
+
+};
+
+
+axios(setting)
+  .then((res) => {
+    let response = res.data
+   if(response.type!="error"){
+      setLabels(response.data.system)
+      setValues(response.data.count)
+
+
+   }else{
+   
+   }
+  })
+  .catch((error) => {
+   
+
+
+  });
+}

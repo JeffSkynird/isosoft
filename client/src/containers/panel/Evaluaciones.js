@@ -192,6 +192,7 @@ export default function Evaluaciones(props) {
                     ]}
 
                     options={{
+                        pageSize:10,
                         showTitle: false,
                         actionsColumnIndex: -1,
                         search: false,

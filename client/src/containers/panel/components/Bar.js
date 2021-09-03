@@ -18,6 +18,10 @@ export default function Bar(props) {
             width:'100%',
             type: 'bar',
           },
+          title: {
+            text: 'Puntaje',
+            align: 'left'
+          },
           plotOptions: {
             bar: {
                 distributed: true,
