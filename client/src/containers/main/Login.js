@@ -17,6 +17,7 @@ import splashR from '../../assets/register.png'
 
 import Register from './Register'
 import Iniciar from './Iniciar'
+import { useMediaQuery, useTheme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -40,12 +41,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
+    const dato = props.location.state;
+    const theme = useTheme();
+
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const classes = useStyles();
     const [tab,setTab]=React.useState(0)
 
 
-
+    React.useEffect(()=>{
+        console.log(dato)
+        if(dato!=undefined){
+            if(dato.hasOwnProperty('register')){
+                setTab(1)
+            }
+        }
+        
+    },[dato])
     return (
 
         <div className={classes.paper}>
@@ -53,7 +66,7 @@ export default function SignIn() {
                 <CardContent>
 
                     <Grid style={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={{ marginRight: 30 }} >
+                        <div style={{ marginRight: fullScreen?0:30 }} >
                             <div style={{display:'flex',marginBottom:10,alignItems:'center',justifyContent:'space-between'}}>
                                 <IconButton aria-label="back" size="small" onClick={() => window.location.href="/bienvenida"}>
                                     <ArrowBackIcon />
@@ -72,7 +85,7 @@ export default function SignIn() {
                             </div>
 
                             <Typography component="h1" variant="h5">
-                                Inicia sesión
+                            {tab==0?'Inicia sesión':'Registrate ahora'}
                             </Typography>
                             <Typography variant="subtitle1" style={{ fontSize: 15, color: '#929396' }}>
                                 Accede al portal administrativo
@@ -86,7 +99,7 @@ export default function SignIn() {
                         </div>
                     
 
-                        <img src={tab==0?splashL:splashR} style={{ width: 350, height: 260 }} alt="" srcset="" />
+                        <img src={tab==0?splashL:splashR} style={{display:fullScreen?'none':'', width: 350, height: 260 }} alt="" srcset="" />
                     </Grid>
 
                 </CardContent>

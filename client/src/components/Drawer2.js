@@ -20,6 +20,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from "react-router-dom";
 import Toolbar from '@material-ui/core/Toolbar';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import ListIcon from '@material-ui/icons/List';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -73,6 +75,8 @@ function ResponsiveDrawer(props) {
     const location = useLocation();
     const classes = useStyles();
     const theme = useTheme();
+
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [cambio, setCambio] = React.useState(null)
     const [info, setInfo] = React.useState(null)
@@ -219,11 +223,12 @@ function ResponsiveDrawer(props) {
                     null
             }
 
-            <main className={history != null ? history.location.pathname != "/bienvenida" ? classes.content : "" : ""}>
+            <main  className={history != null ? history.location.pathname != "/bienvenida" ? classes.content : "" : ""}>
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
                     edge="start"
+                    style={{display:history.location.pathname == "/bienvenida"  ||history.location.pathname == "/login"  ?'none':''}}
                     onClick={handleDrawerToggle}
                     className={classes.menuButton}
                 >
