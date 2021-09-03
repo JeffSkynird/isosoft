@@ -78,10 +78,13 @@ export default function Evaluaciones(props) {
             <Resultado {...props} open={openResultado} setOpen={setOpenResultado} id={idResultado}/>
             <CrearEvaluacion sistema={selected} setOpen={setOpen} open={open} completar={completar} carga={carga} />
             <Eliminar sistema={selected2} setOpen={setOpen2} open={open2} carga={carga} />
-            <Grid item xs={12} md={12}>
+            <Grid item xs={12} md={12} style={{display:'flex',justifyContent:'space-between'}}>
                 <Typography variant="h5" >
                     Evaluaciones
                 </Typography>
+                <Button onClick={() => setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
+                        Nuevo
+                    </Button>
             </Grid>
 
             <Grid item xs={12} md={12} style={{ display: 'flex', marginTop: 10 }}>
@@ -118,15 +121,7 @@ export default function Evaluaciones(props) {
                 </Card>
 
             </Grid>
-            <Grid item xs={12} md={12} >
-                <div style={{ display: 'flex',justifyContent:'flex-end' }}>
-
-                    <Button onClick={() => setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
-                        Nuevo
-                    </Button>
-                </div>
-
-            </Grid>
+         
          
             <Grid item xs={12}>
                 <MaterialTable
