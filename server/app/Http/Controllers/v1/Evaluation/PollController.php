@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Evaluation;
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
 use App\Models\Evaluation;
+use App\Models\Metric;
 use App\Models\Option;
 use App\Models\Poll;
 use App\Models\System;
@@ -106,7 +107,7 @@ class PollController extends Controller
     public function index()
     {
         $idUser = Auth::user();
-        $data = \DB::select("select po.*,sy.name as system from polls po,systems sy where po.id_system =sy.id and po.id_system in (select id from systems where id_user=$idUser->id)");
+        $data = \DB::select("select po.*,sy.name as system from polls po,systems sy where po.id_system =sy.id and po.id_system in (select id from systems where id_user=$idUser->id) order by po.id desc");
         return response()->json([
             "status" => "200",
             "data" => $data,
@@ -162,7 +163,8 @@ class PollController extends Controller
 
                 $totalPoll+=$totalEvaF;
             }
-            $totalPollF=$totalPoll/(count($evaluations)!=0?count($evaluations):0);
+            
+            $totalPollF=$totalPoll/(Metric::count()!=0?Metric::count():1);
             $po = Poll::find($poll->id);
             $po->score=round($totalPollF,2);
             $po->save();
@@ -280,7 +282,7 @@ class PollController extends Controller
 
                 $totalPoll+=$totalEvaF;
             }
-            $totalPollF=$totalPoll/(count($evaluations)!=0?count($evaluations):0);
+            $totalPollF=$totalPoll/(Metric::count()!=0?Metric::count():1);
             $po = Poll::find($poll->id);
             $po->score=round($totalPollF,2);
             $po->save();

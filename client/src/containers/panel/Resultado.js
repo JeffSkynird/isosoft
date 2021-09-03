@@ -55,6 +55,7 @@ export default function Resultado(props) {
 
     React.useEffect(() => {
         if (initializer.usuario != null) {
+            
             obtenerPoolResult(props.id, setLabels, setValues, setData, initializer)
         }
     }, [initializer.usuario, props.id])
@@ -70,6 +71,9 @@ export default function Resultado(props) {
 
     const handleClose = () => {
         props.setOpen(false);
+        setData([])
+        setValues([])
+        setLabels([])
     };
     const total = () => {
         let t = 0
@@ -115,7 +119,7 @@ export default function Resultado(props) {
                                     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
                                         {
                                             values.length != 0 ?
-                                                <Radial values={total()} />
+                                                <Radial values={data.poll_score} />
                                                 : null
                                         }
 

@@ -69,6 +69,7 @@ export default function Evaluacion(props) {
 
     React.useEffect(() => {
         if (initializer.usuario != null) {
+            setData([])
             obtenerPoolResult(dato.id, setLabels, setValues, setData, initializer)
         }
     }, [initializer.usuario])
@@ -114,7 +115,7 @@ export default function Evaluacion(props) {
                             <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
                                 {
                                     values.length != 0 ?
-                                        <Radial values={total()} />
+                                        <Radial values={dato.score} />
                                         : null
                                 }
 

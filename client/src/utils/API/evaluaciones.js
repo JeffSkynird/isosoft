@@ -246,6 +246,7 @@ axios(setting)
      if(response.data.length!=0){
       setData3({
         poll:response.data.poll.name,
+        poll_score:response.data.poll.score,
        description:response.data.poll.descripcion,
        system:response.data.system.name
      
