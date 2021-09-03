@@ -205,7 +205,7 @@ export default function Sistemas(props) {
     
                                         { title: "Métrica", field: "metric",headerStyle:{fontWeight:'bold'} },
     
-                                        { title: "Puntaje", field: "avg" },
+                                        { title: "Puntaje", field: "avg" ,render: rowData =><span >{parseFloat(rowData.avg).toFixed(2)}%</span>},
     
     
     
