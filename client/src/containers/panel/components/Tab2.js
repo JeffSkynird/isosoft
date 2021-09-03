@@ -18,9 +18,9 @@ export default function Tab2(props) {
     const [metric, setMetric] = React.useState([])
 
 
-    React.useEffect(()=>{
-        obtenerTodos(setMetrics,initializer)
-    },[])
+    React.useEffect(() => {
+        obtenerTodos(setMetrics, initializer)
+    }, [])
     const getName = (id) => {
         let object = null
         metrics.map((e) => {
@@ -31,47 +31,50 @@ export default function Tab2(props) {
         return object
     }
     React.useEffect(() => {
-        if(metrics.length!=0){
-            obtenerFeatureResult({id_metric:metrics[0].id,id_poll:props.id_poll}, setLabels, setValues, setData)
-        setMetric(metrics[0].id)
+        if (metrics.length != 0) {
+            obtenerFeatureResult({ id_metric: metrics[0].id, id_poll: props.id_poll }, setLabels, setValues, setData)
+            setMetric(metrics[0].id)
         }
     }, [metrics])
     return (
         <Grid container >
-             <Grid item xs={12} md={12} style={{ display: 'flex' }}>
-                        <Autocomplete
-                             size="small"
-                            style={{ width: '100%', marginRight: 10 }}
-                                options={metrics}
-                                value={getName(metric)}
-                                getOptionLabel={(option) => option.name}
-                                onChange={(event, value) => {
-                                    if (value != null) {
+            <Grid item xs={12} md={12} style={{ display: 'flex' }}>
+                <Autocomplete
+                    size="small"
+                    style={{ width: '100%', marginRight: 10 }}
+                    options={metrics}
+                    value={getName(metric)}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(event, value) => {
+                        if (value != null) {
 
-                                        setMetric(value.id)
-                                        setLabels([])
-                                        setValues([])
-                                        setData([])
-                                        obtenerFeatureResult({id_metric:value.id,id_poll:props.id_poll}, setLabels, setValues, setData)
+                            setMetric(value.id)
+                            setLabels([])
+                            setValues([])
+                            setData([])
+                            obtenerFeatureResult({ id_metric: value.id, id_poll: props.id_poll }, setLabels, setValues, setData)
 
-                                    } else {
+                        } else {
 
-                                        setMetric('')
+                            setMetric('')
 
-                                    }
+                        }
 
-                                }} // prints the selected value
-                                renderInput={params => (
-                                    <TextField {...params} label="Seleccione una métrica" variant="outlined" fullWidth />
-                                )}
-                            />
-                    
-                        </Grid>
+                    }} // prints the selected value
+                    renderInput={params => (
+                        <TextField {...params} label="Seleccione una métrica" variant="outlined" fullWidth />
+                    )}
+                />
+
+            </Grid>
+            <Grid item xs={12} md={12} style={{ display: 'flex' }}>
+
             {
                 labels.length != 0 && values.length != 0 && (
                     <Bar values={values} labels={labels} />
                 )
             }
+                    </Grid>
         </Grid>
     )
 }

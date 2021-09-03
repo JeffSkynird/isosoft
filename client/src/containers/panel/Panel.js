@@ -202,6 +202,7 @@ export default function Sistemas(props) {
                                         cellStyle: {
                                             textAlign: 'left'
                                         },
+                                        paging:false,
                                         searchFieldStyle: {
     
                                             padding: 5

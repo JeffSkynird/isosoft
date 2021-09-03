@@ -27,7 +27,7 @@ import { obtenerTodos } from '../../../utils/API/sistemas';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import add from '../../../assets/add.png'
 import Evaluar from './Evaluar';
-import { evaluar, obtenerPool } from '../../../utils/API/evaluaciones';
+import { editarPoll, evaluar, obtenerPool2 } from '../../../utils/API/evaluaciones';
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: 'relative',
@@ -69,7 +69,7 @@ export default function FullScreenDialog(props) {
             setNombre(props.sistema.name)
             setSistema(props.sistema.id_system)
             setDescripcion(props.sistema.descripcion)
-            obtenerPool(props.sistema.id,setDatos, initializer)
+            obtenerPool2(props.sistema.id,setDatos,setEvalu, initializer)
         }
     }, [props.sistema])
     const actualizarEval=(ev)=>{
@@ -85,21 +85,28 @@ export default function FullScreenDialog(props) {
         return tp
     }
     const guardar=()=>{
+        let ar=[]
+        evalu.map((e)=>{
+            if(!ar.some(c => c.id_metric == e.id_metric)){
+                ar.push({id_metric:e.id_metric,answers:tomarValor(e.id_metric)})
+            }
+           
+        })
         if(datos==null){
-            let ar=[]
-            evalu.map((e)=>{
-                if(!ar.some(c => c.id_metric == e.id_metric)){
-                    ar.push({id_metric:e.id_metric,answers:tomarValor(e.id_metric)})
-                }
-               
-            })
+           
            evaluar({ name:nombre,
                 system:sistema,
                 description:descripcion,
                 evaluations:ar
             },initializer,        props.completar) 
+        }else{
+            editarPoll(props.sistema.id,{ name:nombre,
+                system:sistema,
+                description:descripcion,
+                evaluations:ar
+            },initializer)
         }
-
+        props.carga()
         setEvalu([])
         setNombre("")
         setDescripcion("")
@@ -139,7 +146,7 @@ export default function FullScreenDialog(props) {
                         {props.sistema!=null?"Editar evaluación":"Nueva evaluación"}
                     </Typography>
                     <Button disabled={evalu.length==0} autoFocus color="inherit" onClick={guardar}>
-                        {props.sistema!=null?"Cerrar":"Guardar"}
+                        Guardar
                     </Button>
                 </Toolbar>
             </AppBar>

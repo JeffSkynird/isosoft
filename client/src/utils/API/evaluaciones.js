@@ -194,6 +194,37 @@ export const evaluar = (data,store,setIdPoll) => {
 
     });
 }
+export const obtenerPool2 = (id,setData,setData2,store) => {
+  const { usuario, cargarUsuario, mostrarNotificacion, mostrarLoader } = store;
+
+
+let url = ENTRYPOINT+"polls/"+id
+let setting = {
+  method: "Get",
+  url: url,
+  headers: { 'Accept': 'application/json',
+  Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, }
+
+};
+
+
+axios(setting)
+  .then((res) => {
+    let response = res.data
+   if(response.type!="error"){
+      setData(response.data)
+      setData2(response.data)
+
+   }else{
+   
+   }
+  })
+  .catch((error) => {
+   
+
+
+  });
+}
 export const obtenerPoolResult = (id,setData,setData2,setData3,store) => {
   const { usuario, cargarUsuario, mostrarNotificacion, mostrarLoader } = store;
 
@@ -329,3 +360,38 @@ export const obtenerPanelResult = (setData,setLabels,setValues,store) => {
     
       });
     } 
+    
+
+    export const editarPoll = (id,data, store) => {
+      const { usuario, mostrarNotificacion, mostrarLoader } = store;
+     
+   
+      let url = ENTRYPOINT+"polls/"+id;
+      let setting = {
+        method: "PUT",
+        url: url,
+        params:data,
+        data: data,
+        body: data,
+        headers: { Accept: "application/json",  Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, },
+      };
+      mostrarLoader(true);
+    
+      axios(setting)
+        .then((res) => {
+          let response = res.data;
+          if (response.type != "error") {
+           
+            mostrarLoader(false);
+            mostrarNotificacion({ type: "success", message: response.message });
+          } else {
+            mostrarNotificacion({ type: "error", message: response.message });
+            mostrarLoader(false);
+          }
+        })
+        .catch((error) => {
+          mostrarLoader(false);
+    
+          mostrarNotificacion({ type: "error", message: error.message });
+        });
+    };

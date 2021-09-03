@@ -93,7 +93,7 @@ export default function Bar(props) {
     )
     return (
    
-              <Chart options={state.options} series={state.series} type="bar" height={295} />
+              <Chart options={state.options} series={state.series} type="bar" width='100%' height={295} />
      
     )
 }

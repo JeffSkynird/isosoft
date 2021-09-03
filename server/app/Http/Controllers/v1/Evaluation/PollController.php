@@ -222,17 +222,19 @@ class PollController extends Controller
             ]);
         }
     }
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
         $name = $request->input('name');
         $system = $request->input('system');
         $description = $request->input('description');
         $evaluations = $request->input('evaluations');
+        //$user = Auth::user();
         $vacios = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
             'system' => 'required',
             'evaluations' => 'required'
+
         ]);
         if ($vacios->fails()) {
             return response([
@@ -241,27 +243,52 @@ class PollController extends Controller
             ]);
         }
         try {
-            $poll = Poll::find($id);
-            $poll->name = $name;
-            $poll->descripcion = $description;
+            $poll=Poll::find($id);
+            $poll->name=$name;
+            $poll->id_system=$system;
+            $poll->descripcion=$description;
             $poll->save();
 
+            $totalPoll=0;
             foreach ($evaluations as $val) {
-                $data = \DB::select("select id from evaluations where id_pool=$id and id_metric=" . $val['metric'] . ";")[0];
-                if ($data != null) {
-                    $evaluation = Evaluation::find($id);
-                    $evaluation->id_metric = $val['metric'];
-                    $evaluation->id_pool = $val['pool'];
-                    $evaluation->score = $val['score'];
-                    $evaluation->save();
-
-                    $this->saveAnswers(1,$id,$val['question'],$val['option']);
+                $eva = Evaluation::where([
+                    ['id_metric', '=', $val['id_metric']],
+                    ['id_pool', '=', $poll->id]
+                ])->first();
+                $evalua=null;
+                if(is_null($eva)){
+                    $evalua = Evaluation::create([
+                        'id_metric' => $val['id_metric'],
+                        'id_pool' => $poll->id,
+                        'score' => 0
+                    ]);
+                }else{
+                    $eva->id_metric=$val['id_metric'];
+                    $eva->id_pool=$poll->id;
+                    $eva->save();
                 }
-            }
+               
+                $totalEva=0;
+                foreach ($val['answers'] as $val2) {
+                    $this->saveAnswers(1,($eva==null?$evalua->id:$eva->id),$val2['id_question'],$val2['id_option']);
+                    $op = Option::find($val2['id_option']);
+                    $totalEva+=$op->score;
+                }
+                $totalEvaF=$totalEva/(count($val['answers'])!=0?count($val['answers']):1);
+                $ev =Evaluation::find(($eva==null?$evalua->id:$eva->id));
+                $ev->score=round($totalEvaF, 2);
+                $ev->save();
 
+                $totalPoll+=$totalEvaF;
+            }
+            $totalPollF=$totalPoll/(count($evaluations)!=0?count($evaluations):0);
+            $po = Poll::find($poll->id);
+            $po->score=round($totalPollF,2);
+            $po->save();
             return response()->json([
                 "status" => "200",
-                "message" => 'Modificación exitosa',
+                "message" => 'Actualización exitoso',
+                'id_poll'=>$poll->id,
                 "type" => 'success'
             ]);
         } catch (\Exception $e) {
