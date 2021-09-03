@@ -91,16 +91,9 @@ export default function Sistemas(props) {
 
             </Grid>
             <Grid item xs={12} md={12} >
-                <div style={{ display: 'flex' }}>
-                    <Button disableTouchRipple variant="contained" size="small" style={{ marginRight: 20, backgroundColor: 'white' }}>Filtro</Button>
+                <div style={{ display: 'flex',justifyContent:'flex-end' }}>
 
-                    <TextField
-                        label="Buscar"
-                        id="outlined-start-adornment"
-                        size="small"
-                        style={{ width: '100%', marginRight: 20 }}
-                        variant="outlined"
-                    />
+                  
                     <Button onClick={() => setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
                         Nuevo
                     </Button>
@@ -155,7 +148,7 @@ export default function Sistemas(props) {
                         pageSize:10,
                         showTitle: false,
                         actionsColumnIndex: -1,
-                        search: false,
+                      
                         maxBodyHeight: 350,
                         padding: 'dense',
                         headerStyle: {
