@@ -90,6 +90,7 @@ export default function Settings(props) {
                     style={{ marginBottom: 10, width: '100%' }}
                     id="email"
                     size="small"
+                    type="password"
                     label="Contraseña"
                     name="email"
                     value={clave}
