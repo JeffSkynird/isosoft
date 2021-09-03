@@ -127,9 +127,9 @@ function ResponsiveDrawer(props) {
             <div style={{ justifyContent: 'space-between', flexDirection: 'column', display: 'flex', height: '100%' }}>
                 <List style={{ padding: 10 }} >
 
-                    <ListItem button style={comprobador('/dashboard')}>
-                        <ListItemIcon><DashboardIcon /> </ListItemIcon>
-                        <ListItemText primary={'Tablero principal'} />
+                    <ListItem button onClick={() => props.history.push('panel')} style={comprobador('/panel')}>
+                        <ListItemIcon style={{ color: 'inherit' }}><DashboardIcon /> </ListItemIcon>
+                        <ListItemText primary={'Panel'} />
                     </ListItem>
                     <ListItem button onClick={() => props.history.push('sistemas')} style={comprobador('/sistemas')}>
                         <ListItemIcon style={{ color: 'inherit' }}><DesktopWindowsIcon style={{ color: 'inherit' }} /> </ListItemIcon>

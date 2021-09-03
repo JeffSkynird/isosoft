@@ -97,15 +97,15 @@ export default function FullScreenDialog(props) {
                 system:sistema,
                 description:descripcion,
                 evaluations:ar
-            },initializer) 
+            },initializer,        props.completar) 
         }
-        
+
         setEvalu([])
         setNombre("")
         setDescripcion("")
         setTab(0)
         props.setOpen(false)
-        props.carga()
+     
         setDatos(null)
     }
     const close =()=>{

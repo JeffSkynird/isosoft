@@ -29,6 +29,8 @@ import Evaluaciones from './containers/panel/Evaluaciones'
 import Evaluacion from './containers/panel/Evaluacion'
 
 import Sistemas from './containers/panel/Sistemas'
+import Resultado from './containers/panel/Resultado';
+import Panel from './containers/panel/Panel';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -162,6 +164,8 @@ export default function App(props) {
                   <Route exact path="/bienvenida" component={Bienvenida} />
                   <Route exact path="/evaluaciones" component={Evaluaciones} />
                   <Route exact path="/evaluacion" component={Evaluacion} />
+                  <Route exact path="/mensaje" component={Resultado} />
+                  <Route exact path="/panel" component={Panel} />
 
                   <Route exact path="/sistemas" component={Sistemas} />
 

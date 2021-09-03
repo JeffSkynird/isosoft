@@ -7,6 +7,7 @@ use App\Models\Answer;
 use App\Models\Evaluation;
 use App\Models\Option;
 use App\Models\Poll;
+use App\Models\System;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,94 @@ use \Validator;
 
 class PollController extends Controller
 {
+    public function obtenerSistemasMetricas($id){
+        $user = Auth::user();
+
+        $data = \DB::select("select sys.name as system,me.name as metric,avg(eva.score) from metrics me, evaluations eva, polls po, systems sys where me.id=eva.id_metric and eva.id_pool=po.id and po.id_system=sys.id and sys.id=$id and sys.id_user=$user->id
+        group by sys.name,me.name
+        ");
+        return $data;
+    }
+    public function obtenerPanelResult(Request $request){
+        $user = Auth::user();
+        $data = \DB::select("select avg(po.score),sys.id,sys.name from systems sys,polls po where sys.id_user=$user->id and po.id_system=sys.id group by sys.id,sys.name");
+        $total=array();
+        $labels=array();
+        $values=array();
+        foreach ($data as $val) {
+            array_push($labels,$val->name);
+            array_push($values,floatval($val->avg));
+        }
+        foreach ($data as $val) {
+            $dat=$this->obtenerSistemasMetricas($val->id);
+           array_push($total,array(
+               "name"=>$val->name,
+               "avg"=>$val->avg,
+               "detail"=>$dat
+           ));
+        }
+       
+        return response()->json([
+            "status" => "200",
+            "data" =>$total,
+            "data1"=>array(
+                "labels"=>$labels,
+                "values"=>$values
+            ),
+            "message" => 'Información obtenida con exitoso',
+            "type" => 'success'
+        ]);
+    }
+    
+    public function obtenerResultadoCaracteristica(Request $request){
+        $idPoll=$request->input('id_poll');
+        $idMetric =$request->input('id_metric');
+   
+        $data = \DB::select("select q.id,q.title,op.score from questions q,answers ans,evaluations eva,metrics me,options op where ans.id_option=op.id and eva.id_pool=$idPoll and eva.id_metric =me.id and me.id=$idMetric and q.id=ans.id_question and ans.id_evaluation=eva.id group by q.id,q.title,eva.score,op.score order by q.id");
+        $labels=array();
+        $values=array();
+        foreach ($data as $val) {
+            array_push($labels,$val->title);
+            array_push($values,floatval($val->score));
+        }
+       
+        return response()->json([
+            "status" => "200",
+            "data" => array(
+                    'data'=>$data,
+                    'sub_caracteristica'=>$labels,
+                    'score'=>$values,
+            ),
+            "message" => 'Información obtenida con exitoso',
+            "type" => 'success'
+        ]);
+    }
+    public function obtenerResultado($id){
+        $poll = Poll::find($id);
+        $system=System::find($poll->id_system);
+        $data = \DB::select("select me.name,eva.score from metrics me,evaluations eva, polls po, systems sys where eva.id_pool = po.id and po.id_system=sys.id and me.id=eva.id_metric and po.id=$id");
+        $dataF=array();
+       
+        $dataF2=array();
+        foreach ($data as $val) {
+            array_push($dataF,$val->name);
+            array_push($dataF2,floatval($val->score));
+        }
+       
+        return response()->json([
+            "status" => "200",
+            "data" => array(
+                
+                    'poll'=>$poll,
+                    'system'=>$system,
+                    'metric'=>$dataF,
+                    'score'=>$dataF2
+                
+            ),
+            "message" => 'Información obtenida con exitoso',
+            "type" => 'success'
+        ]);
+    }
     public function index()
     {
         $idUser = Auth::user();
@@ -80,6 +169,7 @@ class PollController extends Controller
             return response()->json([
                 "status" => "200",
                 "message" => 'Registro exitoso',
+                'id_poll'=>$poll->id,
                 "type" => 'success'
             ]);
         } catch (\Exception $e) {

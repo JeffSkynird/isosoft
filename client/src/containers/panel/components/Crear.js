@@ -43,6 +43,7 @@ export default function Crear(props) {
         setNombre("")
         setUrl("")
         setDescripcion("")
+        props.setSelected(null)
     }
     return (
         <Dialog

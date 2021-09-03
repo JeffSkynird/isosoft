@@ -13,15 +13,18 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import Avatar from '@material-ui/core/Avatar';
 import Initializer from '../../store/Initializer'
 
-import { LocalizationTable, TableIcons, removeAccent } from '../../utils/table.js'
+import { LocalizationTable, TableIcons } from '../../utils/table.js'
 import MaterialTable from "material-table";
 import { Grid } from '@material-ui/core';
 import { obtenerTodos } from '../../utils/API/evaluaciones.js';
 import CrearEvaluacion from './components/CrearEvaluacion'
 import Eliminar from './components/EliminarEvaluacion'
+import Resultado from './Resultado';
 
 export default function Evaluaciones(props) {
     const initializer = React.useContext(Initializer);
+    const [openResultado, setOpenResultado] = React.useState(false);
+    const [idResultado, setIdResultado] = React.useState(0);
 
     const [data, setData] = React.useState([])
     const [open, setOpen] = React.useState(false)
@@ -39,13 +42,21 @@ export default function Evaluaciones(props) {
         setSelected(null)
         setSelected2(null)
     }
+    const completar = (id) => {
+
+        obtenerTodos(setData, initializer)
+        setSelected(null)
+        setSelected2(null)
+        setOpenResultado(true)
+        setIdResultado(id)
+    }
     const color=(val)=>{
-        console.log(val)
+  
         if(parseFloat(val)>=80){
             return "#47B881"
         }else if(parseFloat(val)<=79&&parseFloat(val)>=45){
             return "#DFB733"
-        }else if(parseFloat(val)<=25){
+        }else if(parseFloat(val)<=44){
             return "#EC4C47"
         }else{
             return "#E4E7EB"
@@ -54,14 +65,18 @@ export default function Evaluaciones(props) {
     const totalCumplimiento=()=>{
         let t=0
         data.map((e)=>{
-            t+=e.score
+            t+=parseFloat(e.score)
         })
-        let f =t/data!=0?data.length:1
-        return f
+        console.log(data.length)
+        console.log(t)
+        let f =t/(data!=0?data.length:1)
+        console.log(f)
+        return f.toFixed(2)
     }
     return (
         <Grid container spacing={2}>
-            <CrearEvaluacion sistema={selected} setOpen={setOpen} open={open} carga={carga} />
+            <Resultado {...props} open={openResultado} setOpen={setOpenResultado} id={idResultado}/>
+            <CrearEvaluacion sistema={selected} setOpen={setOpen} open={open} completar={completar} carga={carga} />
             <Eliminar sistema={selected2} setOpen={setOpen2} open={open2} carga={carga} />
             <Grid item xs={12} md={12}>
                 <Typography variant="h5" >
@@ -93,7 +108,7 @@ export default function Evaluaciones(props) {
                         </Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="h4" gutterBottom>
-                                {totalCumplimiento()}
+                                {totalCumplimiento()}%
                             </Typography>
                             <Avatar variant="rounded" style={{ backgroundColor: '#47B881', borderRadius: 20 }} >
                                 <EqualizerIcon />

@@ -131,7 +131,7 @@ export const obtenerTodos = (setData,store) => {
 
     });
 }
-export const evaluar = (data,store) => {
+export const evaluar = (data,store,setIdPoll) => {
     const { usuario, mostrarNotificacion, mostrarLoader } = store;
     
     let url = ENTRYPOINT+"polls";
@@ -149,7 +149,7 @@ export const evaluar = (data,store) => {
       .then((res) => {
         let response = res.data;
         if (response.type != "error") {
-         
+         setIdPoll(response.id_poll)
           mostrarLoader(false);
           mostrarNotificacion({ type: "success", message: response.message });
         } else {
@@ -194,4 +194,138 @@ export const evaluar = (data,store) => {
 
     });
 }
+export const obtenerPoolResult = (id,setData,setData2,setData3,store) => {
+  const { usuario, cargarUsuario, mostrarNotificacion, mostrarLoader } = store;
+
+
+let url = ENTRYPOINT+"poll_result/"+id
+let setting = {
+  method: "Get",
+  url: url,
+  headers: { 'Accept': 'application/json',
+ }
+
+};
+
+
+axios(setting)
+  .then((res) => {
+    let response = res.data
+   if(response.type!="error"){
+     if(response.data.length!=0){
+      setData3({
+        poll:response.data.poll.name,
+       description:response.data.poll.descripcion,
+       system:response.data.system.name
+     
+      }
+       )
+    }
+    
+      setData(response.data.metric)
+      setData2(response.data.score)
+   
+
+   }else{
+   
+   }
+  })
+  .catch((error) => {
+   
+
+
+  });
+} 
+export const obtenerFeatureResult = (data,setLabels,setValues,setData) => {
+
+let url = ENTRYPOINT+"features_result"
+let setting = {
+  method: "Get",
+  url: url,
+  params:data,
+  headers: { 'Accept': 'application/json',
+ }
+
+};
+
+
+axios(setting)
+  .then((res) => {
+    let response = res.data
+   if(response.type!="error"){
+    
+      setData(response.data.data)
+      setLabels(response.data.sub_caracteristica)
+      setValues(response.data.score)
+
+   }else{
+   
+   }
+  })
+  .catch((error) => {
+   
+
+
+  });
+} 
+export const obtenerPanelResult = (setData,setLabels,setValues,store) => {
+  const { usuario, cargarUsuario, mostrarNotificacion, mostrarLoader } = store;
+  let url = ENTRYPOINT+"obtener_panel_result"
+  let setting = {
+    method: "Get",
+    url: url,
+    headers: { 'Accept': 'application/json',    Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, 
+
+   }
   
+  };
+  
+  
+  axios(setting)
+    .then((res) => {
+      let response = res.data
+     if(response.type!="error"){
+      setData(response.data)
+        setLabels(response.data1.labels)
+        setValues(response.data1.values)
+  
+     }else{
+     
+     }
+    })
+    .catch((error) => {
+     
+  
+  
+    });
+  } 
+  
+  export const obtenerMetricasSistemas = (setData,store) => {
+    const { usuario, cargarUsuario, mostrarNotificacion, mostrarLoader } = store;
+    let url = ENTRYPOINT+"metrics_systems"
+    let setting = {
+      method: "Get",
+      url: url,
+      headers: { 'Accept': 'application/json',    Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, 
+  
+     }
+    
+    };
+    
+    
+    axios(setting)
+      .then((res) => {
+        let response = res.data
+       if(response.type!="error"){
+        setData(response.data)
+
+       }else{
+       
+       }
+      })
+      .catch((error) => {
+       
+    
+    
+      });
+    } 

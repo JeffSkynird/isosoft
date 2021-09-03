@@ -40,9 +40,15 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('questions', 'App\Http\Controllers\v1\Evaluation\QuestionController@index');
     Route::get('options', 'App\Http\Controllers\v1\Evaluation\QuestionController@indexOptions');
     Route::get('showByPoll/{id}', 'App\Http\Controllers\v1\Evaluation\MetricController@showByPoll');
+    Route::get('poll_result/{id}', 'App\Http\Controllers\v1\Evaluation\PollController@obtenerResultado');
+    Route::get('features_result', 'App\Http\Controllers\v1\Evaluation\PollController@obtenerResultadoCaracteristica');
 
     
     Route::middleware('auth:api')->group(function () {
+        Route::get('obtener_panel_result', 'App\Http\Controllers\v1\Evaluation\PollController@obtenerPanelResult');
+        Route::get('metrics_systems', 'App\Http\Controllers\v1\Evaluation\PollController@obtenerSistemasMetricas');
+
+        
         Route::get('systems', 'App\Http\Controllers\v1\Evaluation\SystemController@index');
         Route::post('systems', 'App\Http\Controllers\v1\Evaluation\SystemController@create');
         Route::get('polls', 'App\Http\Controllers\v1\Evaluation\PollController@index');

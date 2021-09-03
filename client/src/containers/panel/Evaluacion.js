@@ -11,8 +11,12 @@ import CardContent from '@material-ui/core/CardContent';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
+import Chart from "react-apexcharts";
+import Bar from './components/Bar';
+import { obtenerPoolResult } from '../../utils/API/evaluaciones';
 import Avatar from '@material-ui/core/Avatar';
 import Initializer from '../../store/Initializer'
+import Box from '@material-ui/core/Box';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import ScrollHorizontal from 'react-scroll-horizontal';
@@ -23,156 +27,140 @@ import { obtenerTodos } from '../../utils/API/evaluaciones.js';
 import CrearEvaluacion from './components/CrearEvaluacion'
 import Eliminar from './components/EliminarEvaluacion'
 import { obtenerTodosPorPoll } from '../../utils/API/metricas';
-
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import Radial from './components/Radial';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Tab2 from './components/Tab2';
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
 export default function Evaluacion(props) {
-    console.log(props)
+
     const dato = props.location.state;
 
     const initializer = React.useContext(Initializer);
-
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const [values, setValues] = React.useState([])
+    const [labels, setLabels] = React.useState([])
     const [data, setData] = React.useState([])
-    const [open, setOpen] = React.useState(false)
-    const [open2, setOpen2] = React.useState(false)
-    const [selected, setSelected] = React.useState(null)
+    const [value, setValue] = React.useState(0);
+
 
     React.useEffect(() => {
         if (initializer.usuario != null) {
-            if (dato != null) {
-                obtenerTodosPorPoll(dato.id, setData, initializer)
-            }
-
+            obtenerPoolResult(dato.id, setLabels, setValues, setData, initializer)
         }
     }, [initializer.usuario])
-    if (props.location.state == null) {
-        props.history.push("/evaluaciones");
-        return null;
-    }
-    const carga = () => {
-        obtenerTodos(setData, initializer)
-        setSelected(null)
-    }
-    const esPar=(value)=>{
-        if (value%2==0) {
-            return true
-        }else{
-            return false
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+
+    const handleClickOpen = () => {
+        props.setOpen(true);
+    };
+
+    const handleClose = () => {
+        props.setOpen(false);
+    };
+    const total = () => {
+        let t = 0
+        values.map((e) => {
+            t += e
+        })
+        if (values.length != 0) {
+            return (t / values.length).toFixed(2)
+        } else {
+            return t
         }
     }
-    const color=(val)=>{
-        console.log(val)
-        if(parseFloat(val)>=70){
-            return "#47B881"
-        }else if(parseFloat(val)<=69&&parseFloat(val)>=30){
-            return "#F7D154"
-        }else if(parseFloat(val)<=29){
-            return "#EC4C47"
-        }else{
-            return "#E4E7EB"
-        }
-    }
-    const child = { width: `300em`, height: `100%`}
     return (
-        <Grid container spacing={2}>
-            <CrearEvaluacion sistema={selected} setOpen={setOpen} open={open} carga={carga} />
-            <Eliminar sistema={selected} setOpen={setOpen2} open={open2} carga={carga} />
-            <Grid item xs={12} md={12} style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <Typography variant="h5" >
-                    Evaluacion {dato != null ? dato.name : ""}
-                </Typography>
-                <IconButton aria-label="Cancelar" onClick={() =>  props.history.goBack()}>
-                  <ArrowBackIcon />
-                </IconButton>
-            </Grid>
+        <Grid container >
 
-            <div item xs={12} md={12} style={{ marginBottom:10,height:133,width: `100%` }}>
-            <ScrollHorizontal >
-                {
-                    data.map((e,i) => (
-                        <Card style={{ width: 300, height: 130, marginRight: 20, marginBottom: 5 }} >
-                            <CardContent>
-                                <Typography variant="subtitle1" gutterBottom>
-                                    {e.metric}
+            <Grid xs={12} md={12}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+
+                    <Card style={{ width: fullScreen ? '100%' : '100%', display: 'flex', }}>
+                        <CardContent style={{ width: '100%' }}>
+                            <Grid item xs={12} md={12} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Typography variant="h5" >
+                                    Evaluacion {dato != null ? dato.name : ""}
                                 </Typography>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Typography variant="h4" gutterBottom>
-                                        {e.score}%
+                                <IconButton aria-label="Cancelar" onClick={() => props.history.goBack()}>
+                                    <ArrowBackIcon />
+                                </IconButton>
+                            </Grid>
+                            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
+                                {
+                                    values.length != 0 ?
+                                        <Radial values={total()} />
+                                        : null
+                                }
+
+                                <div >
+                                    <Typography variant="subtitle1" gutterBottom>
+                                        <span style={{ fontWeight: 'bold' }}>Sistema</span>: {data.length != 0 ? data.system : "N/A"}
                                     </Typography>
-                                    <Avatar variant="rounded" style={{ backgroundColor:esPar(i+1)?'#47B881':'#EC4C47', borderRadius: 20 }} >
-                                        <ShowChartIcon />
-                                    </Avatar>
+                                    <Typography variant="subtitle1" gutterBottom>
+                                        <span style={{ fontWeight: 'bold' }}>Evaluación</span>: {data.length != 0 ? data.poll : "N/A"}
+                                    </Typography>
+                                    <Typography variant="subtitle1" gutterBottom>
+                                        <span style={{ fontWeight: 'bold' }}>Descripción</span>: {data.length != 0 ? data.description : "N/A"}
+                                    </Typography>
                                 </div>
-                                <div style={{backgroundColor:'#E4E7EB',height:3,borderRadius:3,marginTop:5}}>
-                                    <div style={{backgroundColor:"#1665D8",height:3,borderRadius:3,width:e.score+"%"}}>
+                            </div>
+                    
+                                <Tabs
+                                    value={value}
+                                    indicatorColor="primary"
+                                    textColor="primary"
+                                    onChange={handleChange}
+                                    aria-label="disabled tabs example"
+                                >
+                                    <Tab label="Puntuación general" />
+                                    <Tab label="Puntuación por característica" />
 
+                                </Tabs>
+
+                                <TabPanel value={value} index={0} dir={theme.direction}>
+                                    <div style={{ marginTop: 15 }} >
+                                        {
+                                            labels.length != 0 && values.length != 0 && (
+                                                <Bar values={values} labels={labels} />
+                                            )
+                                        }
                                     </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))
-                }
-
-</ScrollHorizontal>
-
-            </div>
-            <Grid item xs={12} md={12} >
-                <div style={{ display: 'flex' }}>
-                    <Button disableTouchRipple variant="contained" size="small" style={{ marginRight: 20, backgroundColor: 'white' }}>Filtro</Button>
-
-                    <TextField
-                        label="Buscar"
-                        id="outlined-start-adornment"
-                        size="small"
-                        style={{ width: '100%', marginRight: 20 }}
-                        variant="outlined"
-                    />
-
+                                </TabPanel>
+                                <TabPanel value={value} index={1} dir={theme.direction}>
+                                        <Tab2  {...props} id_poll={dato.id}/ >
+                                </TabPanel>
+                       
+                        </CardContent>
+                    </Card>
                 </div>
 
-            </Grid>
 
-            <Grid item xs={12}>
-                <MaterialTable
-                    icons={TableIcons}
-                    columns={[
-
-                        { title: "Característica", field: "metric" },
-                        { title: "Sistema", field: "system" },
-
-                        { title: "Puntaje", field: "score",render: rowData =>  <div style={{display:'flex',alignItems:'center',height:12,backgroundColor:'gray',borderRadius:3,marginTop:5,width:50}}>
-                        <div style={{backgroundColor:color(rowData.score),height:12,borderRadius:3,width:rowData.score+"%"}}>
-                           
-                        </div>
-                        <span style={{position:'absolute',color:'white',fontWeight:'bold',fontSize:10,marginLeft:10}}>{rowData.score}%</span>
-                    </div>  },
-                        { title: "Fecha", field: "created_at", type: "datetime" },
-
-                    ]}
-                    data={
-                        data
-                    }
-
-                    localization={LocalizationTable}
-
-
-                    options={{
-                        showTitle: false,
-                        actionsColumnIndex: -1,
-                        search: false,
-                        maxBodyHeight: 350,
-                        padding: 'dense',
-                        headerStyle: {
-                            textAlign: 'left'
-                        },
-                        cellStyle: {
-                            textAlign: 'left'
-                        },
-                        searchFieldStyle: {
-
-                            padding: 5
-                        }
-                    }}
-
-                />
             </Grid>
         </Grid>
     )

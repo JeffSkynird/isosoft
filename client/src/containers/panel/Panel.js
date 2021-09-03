@@ -12,26 +12,63 @@ import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import Avatar from '@material-ui/core/Avatar';
 import Initializer from '../../store/Initializer'
-
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import { LocalizationTable, TableIcons, removeAccent } from '../../utils/table.js'
 import MaterialTable from "material-table";
 import { Grid } from '@material-ui/core';
 import { obtenerTodos } from '../../utils/API/sistemas.js';
 import Crear from './components/Crear'
 import Eliminar from './components/Eliminar'
+import { obtenerMetricasSistemas, obtenerPanelResult } from '../../utils/API/evaluaciones';
+import Bar from './components/Bar';
+import Box from '@material-ui/core/Box';
+import Tab2 from './components/Tab2';
+import { obtenerTodos as obtenerTodosS } from '../../utils/API/sistemas';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
 export default function Sistemas(props) {
     const initializer = React.useContext(Initializer);
 
     const [data, setData] = React.useState([])
+    const [data0, setData0] = React.useState([])
+
     const [open, setOpen] = React.useState(false)
     const [open2, setOpen2] = React.useState(false)
     const [selected, setSelected] = React.useState(null)
     const [selected2, setSelected2] = React.useState(null)
+    const [values, setValues] = React.useState([])
+    const [labels, setLabels] = React.useState([])
+    const [value, setValue] = React.useState(0);
+    const [sistemas, setSistemas] = React.useState([])
+    const [sistema, setSistema] = React.useState('')
+    const [data1, setData1] = React.useState([])
 
     React.useEffect(() => {
         if (initializer.usuario != null) {
-            obtenerTodos(setData, initializer)
+            obtenerTodos(setData0, initializer)
+            obtenerPanelResult(setData,setLabels,setValues, initializer)
+            obtenerTodosS(setSistemas, initializer)
+            obtenerMetricasSistemas(setData1, initializer)
         }
     }, [initializer.usuario])
     const carga = () => {
@@ -39,12 +76,24 @@ export default function Sistemas(props) {
         setSelected(null)
         setSelected2(null)
     }
-    const total=()=>{
-        let tot=0
-        data.map((e)=>{
-            tot+=e.evaluaciones
+    const total = () => {
+        let tot = 0
+        data0.map((e) => {
+            tot += e.evaluaciones
         })
         return tot
+    }
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    const getName = (id) => {
+        let object = null
+        sistemas.map((e) => {
+            if (id == e.id) {
+                object = { ...e }
+            }
+        })
+        return object
     }
     return (
         <Grid container spacing={2}>
@@ -61,7 +110,7 @@ export default function Sistemas(props) {
                 <Card style={{ width: 300, height: 120, marginRight: 20, marginBottom: 5 }}>
                     <CardContent>
                         <Typography variant="subtitle1" gutterBottom>
-                            Totales
+                            Sistemas
                         </Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="h4" gutterBottom>
@@ -76,7 +125,7 @@ export default function Sistemas(props) {
                 <Card style={{ width: 300, height: 120 }}>
                     <CardContent>
                         <Typography variant="subtitle1" gutterBottom>
-                            Evaluados
+                            Evaluaciones
                         </Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="h4" gutterBottom>
@@ -90,33 +139,25 @@ export default function Sistemas(props) {
                 </Card>
 
             </Grid>
-            <Grid item xs={12} md={12} >
-                <div style={{ display: 'flex' }}>
-                    <Button disableTouchRipple variant="contained" size="small" style={{ marginRight: 20, backgroundColor: 'white' }}>Filtro</Button>
+            <Grid item md={12} xs={12}>
+            <div style={{ marginTop: 15 }} >
+                        {
+                            labels.length != 0 && values.length != 0 && (
+                                <Bar values={values} labels={labels} />
+                            )
+                        }
+                    </div>
 
-                    <TextField
-                        label="Buscar"
-                        id="outlined-start-adornment"
-                        size="small"
-                        style={{ width: '100%', marginRight: 20 }}
-                        variant="outlined"
-                    />
-                    <Button onClick={() => setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
-                        Nuevo
-                    </Button>
-                </div>
-
+         
             </Grid>
-            <Grid item xs={12}>
+            <Grid item md={12} xs={12}>
                 <MaterialTable
                     icons={TableIcons}
                     columns={[
 
-                        { title: "Nombre", field: "name" },
-                        { title: "Url", field: "url" },
-                        { title: "Descripción", field: "description" },
-                        { title: "Evaluaciones", field: "evaluaciones" },
-                        { title: "Fecha", field: "created_at", type: "datetime" },
+                        { title: "Sistema", field: "name" },
+
+                        { title: "Puntaje", field: "avg" },
 
 
 
@@ -125,34 +166,55 @@ export default function Sistemas(props) {
                     data={
                         data
                     }
-
                     localization={LocalizationTable}
+                    detailPanel={rowData => {
+                        return (
+                            <div style={{padding:10}}>
 
-                    actions={[
-                        {
-                            icon: TableIcons.Edit,
-                            tooltip: 'Editar',
-
-                            onClick: (event, rowData) => {
-                                setSelected(rowData)
-                                setOpen(true)
-                            }
-                        },
-
-                        {
-                            icon: TableIcons.Delete,
-                            tooltip: "Borrar",
-
-                            onClick: (event, rowData) => {
-                                setSelected2(rowData)
-                                setOpen2(true)
-                            }
-                        },
-
-                    ]}
-
+                                <MaterialTable
+                                    icons={TableIcons}
+                                    columns={[
+    
+                                        { title: "Métrica", field: "metric",headerStyle:{fontWeight:'bold'} },
+    
+                                        { title: "Puntaje", field: "avg" },
+    
+    
+    
+    
+                                    ]}
+                                    data={
+                                        rowData.detail
+                                    }
+                                    localization={LocalizationTable}
+                                
+                                    options={{
+                                        showTitle: false,
+                                        actionsColumnIndex: -1,
+                                        search: false,
+                                        header:false,
+                                        toolbar:false,
+                                        padding: 'dense',
+                                        headerStyle: {
+                                            textAlign: 'left'
+                                        },
+                                         pageSizeOptions:false,
+                                        cellStyle: {
+                                            textAlign: 'left'
+                                        },
+                                        searchFieldStyle: {
+    
+                                            padding: 5
+                                        }
+                                    }}
+    
+                                />
+                            </div>
+                        )
+                    }}
+                    title="Puntaje por sistemas"
                     options={{
-                        showTitle: false,
+                      
                         actionsColumnIndex: -1,
                         search: false,
                         maxBodyHeight: 350,
@@ -171,6 +233,7 @@ export default function Sistemas(props) {
 
                 />
             </Grid>
+      
         </Grid>
     )
 }
