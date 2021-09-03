@@ -67,14 +67,14 @@ export default function Tab2(props) {
                 />
 
             </Grid>
-            <Grid item xs={12} md={12} style={{ display: 'flex' }}>
-
-            {
-                labels.length != 0 && values.length != 0 && (
-                    <Bar values={values} labels={labels} />
-                )
-            }
-                    </Grid>
+            <Grid item xs={12} md={12} >
+            <div style={{ marginTop: 15 }} >
+                {
+                    labels.length != 0 && values.length != 0 && (
+                        <Bar values={values} labels={labels} />
+                    )
+                }
+                </div></Grid>
         </Grid>
     )
 }

@@ -31,7 +31,7 @@ class PollController extends Controller
         $values=array();
         foreach ($data as $val) {
             array_push($labels,$val->name);
-            array_push($values,floatval($val->avg));
+            array_push($values,round(floatval($val->avg),2));
         }
         foreach ($data as $val) {
             $dat=$this->obtenerSistemasMetricas($val->id);

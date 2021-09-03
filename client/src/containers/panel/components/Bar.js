@@ -9,12 +9,13 @@ export default function Bar(props) {
     const [state,setState]=React.useState({
           
         series: [{
-          name: 'Inflation',
+          name: 'Puntaje',
           data: props.values
         }],
         options: {
           chart: {
             height: 350,
+            width:'100%',
             type: 'bar',
           },
           plotOptions: {
@@ -93,7 +94,7 @@ export default function Bar(props) {
     )
     return (
    
-              <Chart options={state.options} series={state.series} type="bar" width='100%' height={295} />
+              <Chart options={state.options} series={state.series} type="bar"  height={295} />
      
     )
 }
