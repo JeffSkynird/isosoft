@@ -145,11 +145,8 @@ export default function Evaluaciones(props) {
                         { title: "Sistema", field: "system" },
                         { title: "Descripción", field: "descripcion" },
 
-                        { title: "Puntaje", field: "score" ,render: rowData =>  <div style={{display:'flex',alignItems:'center',height:12,backgroundColor:'gray',borderRadius:3,marginTop:5,width:50}}>
-                        <div style={{backgroundColor:color(rowData.score),height:12,borderRadius:3,width:rowData.score+"%"}}>
-                           
-                        </div>
-                        <span style={{position:'absolute',color:'white',fontWeight:'bold',fontSize:10,marginLeft:10}}>{rowData.score}%</span>
+                        { title: "Puntaje", field: "score" ,render: rowData =>  <div style={{display:'flex',alignItems:'center',height:12,backgroundColor:color(rowData.score),borderRadius:3,marginTop:5,width:50}}>
+                                 <span style={{color:'white',fontWeight:'bold',fontSize:10,marginLeft:10}}>{rowData.score}%</span>
                     </div>  },
                         { title: "Fecha", field: "created_at", type: "datetime" },
 
