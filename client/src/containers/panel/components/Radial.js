@@ -25,11 +25,9 @@ export default function Radial(props) {
 
     })
     return (
-        <div>
-            <span>Evaluaciones por sistemas</span>
+   
             <Chart options={state.options} series={state.series} type="radialBar" height={200} width={200} />
 
-        </div>
 
     )
 }
