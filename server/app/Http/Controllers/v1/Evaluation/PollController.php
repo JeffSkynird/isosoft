@@ -181,21 +181,20 @@ class PollController extends Controller
         }
     }
     public function saveAnswers($idAnswer,$idEvaluation,$idQuestion,$idOption){
-        if($idAnswer==null){
+        $data = \DB::select("select id from answers where id_evaluation=$idEvaluation and id_question=$idQuestion");
+
+        if($data!=null){
+            $answer = Answer::find($data[0]->id);
+            $answer->id_option = $idOption;
+            $answer->save();
+        }else{
             Answer::create([
                 'id_option' => $idOption,
                 'id_evaluation' => $idEvaluation,
                 'id_question' => $idQuestion
             ]);
-        }else{
-            $data = \DB::select("select id from answers where id_evaluation=$idEvaluation and id_question=$idQuestion")[0];
-            if($data!=null){
-                $answer = Answer::find($data->id);
-                $answer->id_option = $idOption;
-                $answer->save();
-            }
-
         }
+       
         
     }
     public function show($id)
