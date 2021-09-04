@@ -29,7 +29,7 @@ export default function Bienvenida(props) {
             Califica con check lists de <span style={{color:'#186FFD'}}>cumplimiento</span>  
                 </Typography>     
                 <Typography variant="h5" style={{fontWeight:100,marginTop:10,color:'#929396',marginBottom:15}} >
-                La norma ISO/IEC 25010 es una norma internacional que se enfoca en la evaluación de calidad de software y sistemas. También conocida como Square (Systems and software Quality Requirements and Evaluation - Requisitos y evaluación de la calidad de los sistemas y el software). 
+                La norma ISO/IEC 25010 es una norma internacional que se enfoca en la evaluación de calidad de software y sistemas. Conocida como Square (Requisitos y evaluación de la calidad de los sistemas y el software). 
 
                 </Typography>
                 <Button variant="outlined" color="primary" size="large" onClick={() => props.history.push('/login')}>
