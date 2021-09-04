@@ -23,8 +23,8 @@ export default function Bienvenida(props) {
                     </Button>
                 </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ width: fullScreen ? '100%' : '40%', paddingLeft: 30 }}>
+            <div style={{ marginTop:fullScreen?50:0,display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ width: fullScreen ? '100%' : '40%', paddingLeft: 30,paddingRight:30 }}>
                     <Typography variant="h5" >
                         Modelo de calidad de Software
                     </Typography>
@@ -37,7 +37,7 @@ export default function Bienvenida(props) {
                     </Typography>
 
                 </div>
-                <img src={splash} style={{ width: 700, height: 625 }} alt="" srcset="" />
+                <img src={splash} style={{ display:fullScreen?'none':'',width: 700, height: 625 }} alt="" srcset="" />
 
 
             </div>
