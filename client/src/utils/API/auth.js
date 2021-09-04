@@ -28,7 +28,6 @@ export const upload = (data, store) => {
       if (response.type != "error") {
        
         mostrarLoader(false);
-        mostrarNotificacion({ type: "success", message: response.message });
       } else {
         mostrarNotificacion({ type: "error", message: response.message });
 
