@@ -157,7 +157,7 @@ function ResponsiveDrawer(props) {
 
                     <ListItem button onClick={() => props.history.push('panel')} style={comprobador('/panel')}>
                         <ListItemIcon style={{ color: 'inherit' }}><DashboardIcon /> </ListItemIcon>
-                        <ListItemText primary={'Panel'} />
+                        <ListItemText primary={'Dashboard'} />
                     </ListItem>
                     <ListItem button onClick={() => props.history.push('sistemas')} style={comprobador('/sistemas')}>
                         <ListItemIcon style={{ color: 'inherit' }}><DesktopWindowsIcon style={{ color: 'inherit' }} /> </ListItemIcon>

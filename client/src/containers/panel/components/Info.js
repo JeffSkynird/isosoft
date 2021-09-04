@@ -47,10 +47,10 @@ export default function Info() {
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle id="alert-dialog-slide-title">Escala de Lickert</DialogTitle>
+                <DialogTitle id="alert-dialog-slide-title">Escala de Likert</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        El cálculo del puntaje se basa en la escala de Lickert. A continuación se lista las opciones y su porcentaje equivalente.
+                        El cálculo del puntaje se basa en la escala de Likert. A continuación se lista las opciones y su porcentaje equivalente.
                     </DialogContentText>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
