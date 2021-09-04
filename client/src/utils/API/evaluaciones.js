@@ -213,7 +213,7 @@ axios(setting)
     let response = res.data
    if(response.type!="error"){
       setData(response.data)
-      setData2(response.data)
+      setData2(response.data.answers)
 
    }else{
    

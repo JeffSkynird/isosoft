@@ -115,13 +115,12 @@ export const iniciarSesion = (email, password, store,history) => {
      }else{
       mostrarNotificacion({type:"error",message:response.message})
       mostrarLoader(false)
-      play(playSound,'error')
+   
      }
     })
     .catch((error) => {
       mostrarLoader(false)
-      play(playSound,'error')
-
+ 
       
 
 
