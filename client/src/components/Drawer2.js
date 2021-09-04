@@ -21,7 +21,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from "react-router-dom";
 import Toolbar from '@material-ui/core/Toolbar';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
+import {PUBLIC_PATH} from '../config/API'
 import ListIcon from '@material-ui/icons/List';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -119,7 +119,19 @@ function ResponsiveDrawer(props) {
             <div style={{ marginBottom: 15, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                 <img src={logo} style={{ marginTop: 20, marginBottom: 15, height: 30, width: 124 }} alt="" srcset="" />
                 <Avatar style={{ width: 80, height: 80 }}>
-                    <PersonIcon fontSize="large" style={{ fontSize: 50 }} />
+                    {
+                        info!=null?
+                            info.image_path!=null?
+
+                            <img src={info!=null?PUBLIC_PATH+info.image_path:""} style={{height:80,width:80,  objectFit: 'cover'}} alt="" srcset="" />
+
+                            :
+                            <PersonIcon fontSize="large" style={{ fontSize: 50 }} />
+
+                        :
+                        <PersonIcon fontSize="large" style={{ fontSize: 50 }} />
+
+                    }
                 </Avatar>
                 <Typography variant="subtitle1" style={{ fontSize: 15, color: '#929396' }}>
                     Administrador

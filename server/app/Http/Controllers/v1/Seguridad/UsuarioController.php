@@ -168,4 +168,36 @@ class UsuarioController extends Controller
             ]);
         }
     }
+    public function upload(Request $request) {
+        $validator = Validator::make($request->all(),[ 
+            'file'  => 'required|mimes:png,jpg,jpeg,gif|max:2305',
+      ]);   
+       
+      if($validator->fails()) {          
+           
+        return response([
+            'message' => "Debe subir una imagen",
+            'type' => "error",
+        ]);                     
+       } 
+       if ($file = $request->file('file')) {
+        $us = Auth::user();
+      
+        $name = $file->getClientOriginalName();
+        $file->storeAs('public', $us->id."_".$name);
+
+       
+        $save = User::find($us->id);
+        $save->image_path = "storage/".$us->id."_".$name;
+        $save->save();
+           
+        return response()->json([
+            "status" => "200",
+            "message" => 'Actualización exitosa',
+            "type" => 'success'
+        ]);
+
+    }
+
+    }
 }

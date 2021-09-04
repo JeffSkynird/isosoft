@@ -57,7 +57,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::put('user', 'App\Http\Controllers\v1\Seguridad\UsuarioController@updateAuth');
         Route::get('user', 'App\Http\Controllers\v1\Seguridad\UsuarioController@showAuth');
+        Route::post('upload', 'App\Http\Controllers\v1\Seguridad\UsuarioController@upload');
 
+        
     });
    
 });

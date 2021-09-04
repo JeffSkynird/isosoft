@@ -4,6 +4,43 @@ import {ENTRYPOINT} from '../../config/API'
 import {play} from '../../utils/sound'
 
 const axios = require('axios');
+export const upload = (data, store) => {
+  const { usuario, mostrarNotificacion, mostrarLoader } = store;
+
+ 
+  var resp = new FormData()
+  resp.append('file', data.image_file)
+  
+  let url = ENTRYPOINT+"upload";
+  let setting = {
+    method: "POST",
+    url: url,
+    data: resp,
+    body: resp,
+    headers: { Accept: "application/json",
+    Authorization: "Bearer " + JSON.parse(desencriptarJson(usuario)).token, },
+  };
+  mostrarLoader(true);
+
+  axios(setting)
+    .then((res) => {
+      let response = res.data;
+      if (response.type != "error") {
+       
+        mostrarLoader(false);
+        mostrarNotificacion({ type: "success", message: response.message });
+      } else {
+        mostrarNotificacion({ type: "error", message: response.message });
+
+        mostrarLoader(false);
+      }
+    })
+    .catch((error) => {
+      mostrarLoader(false);
+
+      
+    });
+};
 export const registrar = (data, setTab,store) => {
   const { cargarUsuario ,playSound,mostrarNotificacion,mostrarLoader} = store
   
@@ -39,7 +76,7 @@ export const registrar = (data, setTab,store) => {
 
     });
 }
-export const editarUsuario = (data, store) => {
+export const editarUsuario = (data,     uploadImage,store) => {
   const { usuario, mostrarNotificacion, mostrarLoader } = store;
  
 
@@ -61,6 +98,7 @@ export const editarUsuario = (data, store) => {
        
         mostrarLoader(false);
         mostrarNotificacion({ type: "success", message: response.message });
+    
         window.location.reload();
       } else {
         mostrarNotificacion({ type: "error", message: response.message });

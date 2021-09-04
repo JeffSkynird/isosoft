@@ -1,6 +1,6 @@
 export const ENTRYPOINT="http://localhost:8000/api/v1/"
 export const LARAVEL_SGI="http://localhost:8001/api/v1/"
-export const PUBLIC_PATH="http://localhost:8000/api/v1/"
+export const PUBLIC_PATH="http://localhost:8000/"
 
 /*
 export const ENTRYPOINT="https://api.ambiensa.info/api/v1/"

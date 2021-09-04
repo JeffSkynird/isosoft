@@ -2,9 +2,9 @@
 import React from 'react'
 import { Button, Grid, Typography } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
-import { editarUsuario, obtenerUsuario } from '../../utils/API/auth';
+import { editarUsuario, obtenerUsuario, upload } from '../../utils/API/auth';
 import Initializer from '../../store/Initializer'
-
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 export default function Settings(props) {
     const initializer = React.useContext(Initializer);
 
@@ -13,7 +13,8 @@ export default function Settings(props) {
     const [correo, setCorreo] = React.useState('')
     const [clave, setClave] = React.useState('')
     const [info, setInfo] = React.useState(null)
-    
+    const [image, setImage] = React.useState(null)
+
 
     React.useEffect(()=>{
         if (initializer.usuario != null) {
@@ -28,7 +29,11 @@ export default function Settings(props) {
         }
     },[info])
     const cambiar=()=>{
-        editarUsuario({names:nombres,last_names:apellidos,email:correo,password:clave},initializer)
+        editarUsuario({names:nombres,last_names:apellidos,email:correo,password:clave},    uploadImage,initializer)
+    
+    }
+    const uploadImage=(va)=>{
+        upload({image_file:va},initializer)
     }
     return (
         <Grid container spacing={2}>
@@ -98,6 +103,33 @@ export default function Settings(props) {
 
                 />
             </Grid>
+            <Grid item md={12} xs={12}>
+                    <input
+                      accept="image/*"
+                      style={{ display: "none", marginRight: "5px" }}
+                      id="templateFile"
+                      multiple
+                      type="file"
+                  
+                      onChange={(e) => {
+                          setImage(e.target.files[0])
+                          uploadImage(e.target.files[0]) 
+                      }}
+                    />
+                    <label htmlFor="templateFile">
+                      <Button
+                              startIcon={<CloudUploadIcon />}
+                        variant="contained"
+                        color="default"
+                        component="span"
+                      >
+                        Subir foto{" "}
+                        {image != null
+                          ? "(" + image.name + ")"
+                          : ""}
+                      </Button>
+                    </label>
+                  </Grid>
             <Grid item xs={12} md={12}>
                 <Button onClick={cambiar} variant="contained" color="primary">
                     Guardar
