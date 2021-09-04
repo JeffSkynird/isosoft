@@ -130,7 +130,7 @@ export default function Evaluar(props) {
                                     </Typography>
                                 </TableCell>
                                 {opciones.map((e) => (
-                                    <TableCell align="right">
+                                    <TableCell align="center">
                                         <Typography style={{ textAlign: 'center', color: '#929396' }}>
                                             {e.name}
                                         </Typography>
@@ -151,7 +151,7 @@ export default function Evaluar(props) {
 
                                         {
                                             opciones.map((z) => (
-                                                <TableCell align="right">
+                                                <TableCell align="center">
                                                     <Radio
                                                         checked={obtenerRadio(e.id.toString()) == z.id.toString()}
                                                         onChange={(a) => cambiarRadio(e.id.toString(), a.target.value)}
