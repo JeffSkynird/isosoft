@@ -71,7 +71,7 @@ export default function Evaluaciones(props) {
         console.log(t)
         let f =t/(data!=0?data.length:1)
         console.log(f)
-        return f.toFixed(2)
+        return f.toFixed(1)
     }
     return (
         <Grid container spacing={2}>
@@ -107,7 +107,7 @@ export default function Evaluaciones(props) {
                 <Card style={{ width: 300, height: 120 }}>
                     <CardContent>
                         <Typography variant="subtitle1" gutterBottom>
-                            Total cumplimiento
+                            Cumplimiento
                         </Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="h4" gutterBottom>

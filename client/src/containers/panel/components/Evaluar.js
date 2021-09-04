@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Grid } from '@material-ui/core'
+import { Grid, IconButton } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -11,6 +11,14 @@ import Initializer from '../../../store/Initializer'
 import { Typography } from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import Info from './Info';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 export default function Evaluar(props) {
@@ -38,13 +46,13 @@ export default function Evaluar(props) {
     React.useEffect(() => {
         if (props.datos != null) {
             setAnswers(props.datos.answers)
-            
+
         }
     }, [props.datos])
     const obtenerRadio = (id_question) => {
         let op = "0"
         answers.map((e) => {
-            if(e.id_metric==metrica){
+            if (e.id_metric == metrica) {
                 if (e.id_question.toString() == id_question.toString()) {
                     op = e.id_option.toString()
                 }
@@ -59,17 +67,17 @@ export default function Evaluar(props) {
         let ar = []
         let esta = false
         answers.map((e) => {
-            if(e.id_metric==metrica){
+            if (e.id_metric == metrica) {
                 if (e.id_question.toString() == id_question.toString()) {
-                    ar.push({ ...e, id_option: id_option,id_metric:metrica })
+                    ar.push({ ...e, id_option: id_option, id_metric: metrica })
                     esta = true
                 } else {
                     ar.push({ ...e })
                 }
-            }else{
-                ar.push({...e})
+            } else {
+                ar.push({ ...e })
             }
-          
+
 
         })
         if (esta) {
@@ -77,7 +85,7 @@ export default function Evaluar(props) {
             console.log(ar)
             props.actualizarEval(ar)
         } else {
-            ar.push({ id_question, id_option ,id_metric:metrica,score:0})
+            ar.push({ id_question, id_option, id_metric: metrica, score: 0 })
             setAnswers(ar)
             props.actualizarEval(ar)
             console.log(ar)
@@ -86,11 +94,9 @@ export default function Evaluar(props) {
 
     }
     return (
-        <div style={{ padding: 10 }} >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-
-
-                <FormControl variant="filled" style={{ width: '380px', height: 50, padding: 5 }} >
+        <Grid container style={{ padding: 10 }} >
+            <Grid xs={12} md={12} style={{ display: 'flex', alignItems: 'center' }}>
+                <FormControl size="small" variant="filled" style={{ width: '95%', padding: 5 }} >
                     <InputLabel id="demo-simple-select-label">Seleccione una métrica</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
@@ -98,7 +104,7 @@ export default function Evaluar(props) {
                         value={metrica}
                         onChange={(e) => {
                             setMetrica(e.target.value)
-                            obtenerPreguntas({ metric:e.target.value }, setPreguntas, initializer)
+                            obtenerPreguntas({ metric: e.target.value }, setPreguntas, initializer)
                         }}
                     >
                         {
@@ -109,46 +115,70 @@ export default function Evaluar(props) {
                         }
                     </Select>
                 </FormControl>
-                <div style={{ display: 'inline-flex' }}>
-                    {
-                        opciones.map((e) => (
-                            <div style={{ width: 150, marginRight: 20 }}>
-                                <Typography style={{ textAlign: 'center', color: '#929396' }}>
-                                    {e.name}
-                                </Typography>
-                            </div>
-
-                        ))
-                    }
+                    <Info />
+            </Grid>
 
 
-                </div>
-            </div>
-            <div style={{ marginTop: 20,display:'flex',flexDirection:'column' }}>
-                {
-                    preguntas.map((e, i) => (
-                        <div key={i} style={{ marginTop: 15, display: 'flex',justifyContent:'space-between',alignItems: 'center', }}>
-                            <div style={{width: '380px'}}>
-                                <Typography style={{ fontWeight: 'bold', }}>
-                                    {e.title}
-                                </Typography>
-                                <Typography style={{ color: '#929396' }}>
-                                    {e.name}
-                                </Typography>
-                            </div>
-                            <RadioGroup style={{ alignItems:'center',justifyContent:'center',display:'flex', flexDirection: 'row' }} key={i} aria-label="gender" value={obtenerRadio(e.id.toString())} onChange={(a) => cambiarRadio(e.id.toString(), a.target.value)}>
-                                {
-                                    opciones.map((z) => (
-                                        <FormControlLabel style={{width: 150,marginRight: 20, display:'flex',justifyContent:'center'}} value={z.id.toString()} control={<Radio />} />
+            <Grid xs={12} md={12} style={{ marginTop: 30 }}>
+                <TableContainer component={Paper}>
+                    <Table aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="right">
+                                    <Typography style={{ textAlign: 'center', color: '#929396' }}>
+                                        Característica
+                                    </Typography>
+                                </TableCell>
+                                {opciones.map((e) => (
+                                    <TableCell align="right">
+                                        <Typography style={{ textAlign: 'center', color: '#929396' }}>
+                                            {e.name}
+                                        </Typography>
+                                    </TableCell>
 
-                                    ))
-                                }
-                            </RadioGroup>
-                        </div>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                preguntas.map((e, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell component="th" scope="row">
+                                            <span style={{ fontWeight: 'bold' }}>{e.title}</span><br />
+                                            {e.name}
+                                        </TableCell>
 
-                    ))
-                }
-            </div>
-        </div>
+
+                                        {
+                                            opciones.map((z) => (
+                                                <TableCell align="right">
+                                                    <Radio
+                                                        checked={obtenerRadio(e.id.toString()) == z.id.toString()}
+                                                        onChange={(a) => cambiarRadio(e.id.toString(), a.target.value)}
+                                                        value={z.id.toString()}
+                                                        color="primary"
+                                                        name="radio-button-demo"
+                                                        inputProps={{ 'aria-label': 'D' }}
+                                                    />
+                                                </TableCell>
+                                            ))
+                                        }
+
+
+
+                                    </TableRow>
+
+
+
+                                ))
+                            }
+
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+            </Grid>
+
+        </Grid >
     )
 }

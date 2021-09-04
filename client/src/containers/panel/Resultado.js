@@ -101,7 +101,7 @@ export default function Resultado(props) {
             <DialogTitle id="alert-dialog-slide-title" style={{marginBottom:0,paddingBottom:0}}>
                 <div item xs={12} md={12} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="h5" >
-                        Evaluacion  {data.length != 0 ? data.poll : "N/A"}
+                    {data.length != 0 ? data.system : "N/A"}
                     </Typography>
                     <IconButton aria-label="Cancelar" onClick={handleClose}>
                         <ArrowBackIcon color="primary" />
@@ -125,9 +125,7 @@ export default function Resultado(props) {
 
 
                                         <div >
-                                            <Typography variant="subtitle1" gutterBottom>
-                                                <span style={{ fontWeight: 'bold' }}>Sistema</span>: {data.length != 0 ? data.system : "N/A"}
-                                            </Typography>
+                                        
                                             <Typography variant="subtitle1" gutterBottom>
                                                 <span style={{ fontWeight: 'bold' }}>Evaluación</span>: {data.length != 0 ? data.poll : "N/A"}
                                             </Typography>

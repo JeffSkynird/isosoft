@@ -106,7 +106,7 @@ export default function Evaluacion(props) {
                         <CardContent style={{ width: '100%' }}>
                             <Grid item xs={12} md={12} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <Typography variant="h5" >
-                                    Evaluacion {dato != null ? dato.name : ""}
+                                {data.length != 0 ? data.system : "N/A"}
                                 </Typography>
                                 <IconButton aria-label="Cancelar" onClick={() => props.history.goBack()}>
                                     <ArrowBackIcon  color="primary"/>
@@ -120,9 +120,7 @@ export default function Evaluacion(props) {
                                 }
 
                                 <div >
-                                    <Typography variant="subtitle1" gutterBottom>
-                                        <span style={{ fontWeight: 'bold' }}>Sistema</span>: {data.length != 0 ? data.system : "N/A"}
-                                    </Typography>
+                                
                                     <Typography variant="subtitle1" gutterBottom>
                                         <span style={{ fontWeight: 'bold' }}>Evaluación</span>: {data.length != 0 ? data.poll : "N/A"}
                                     </Typography>

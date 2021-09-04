@@ -177,7 +177,7 @@ export default function FullScreenDialog(props) {
                                     <TextField {...params} label="Seleccione un sistema" variant="outlined" fullWidth />
                                 )}
                             />
-                            <Button disabled={sistema == ""||nombre==""||descripcion==""} onClick={() => empezar()} startIcon={<ExitToAppIcon />} variant="contained" size="small" color="primary">
+                            <Button disabled={sistema == ""||nombre==""||descripcion==""} onClick={() => empezar()} variant="contained" size="small" color="primary">
                                 Empezar
                             </Button>
                         </Grid>
